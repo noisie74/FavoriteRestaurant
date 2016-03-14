@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Project2</string>
+    <string name="neighborhood_name">Uptown Oakland</string>
+    <string name="search_button">SEARCH</string>
+    <string name="restaurants_count">Restaurants found:</string>
+    <string name="search_by_name_hint">Search by name:</string>
+    <string name="search_by_food_hint">Search by food:</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
