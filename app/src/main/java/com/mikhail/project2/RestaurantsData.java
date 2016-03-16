@@ -15,8 +15,8 @@ public class RestaurantsData extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Restaurants.db";
     public static final String TABLE_NAME = "restaurants";
 //    public static final String SQL_CREATE_RESTAURANTS_TABLE =
-//            "CREATE TABLE restaurants ( id INTEGER PRIMARY KEY, name TEXT, price TEXT, rating TEXT, delivery TEXT )";
-    public static final String COL_ID = "id";
+//            "CREATE TABLE restaurants ( _id INTEGER PRIMARY KEY, name TEXT, price TEXT, rating TEXT, delivery TEXT )";
+    public static final String COL_ID = "_id";
     public static final String COL_NAME = "name";
     public static final String COL_PRICE = "price";
     public static final String COL_RATING = "rating";
@@ -24,7 +24,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
     public static final String[] TABLE_COLUMNS = {COL_ID, COL_NAME, COL_PRICE, COL_RATING, COL_DELIVERY};
 
     private static final String SQL_CREATE_RESTAURANTS_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "(" + COL_ID + " INTEGER PRIMARY KEY, " + COL_NAME + " TEXT, " + COL_PRICE + " TEXT, " + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT )";
+            "CREATE TABLE " + TABLE_NAME + "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT, " + COL_PRICE + " TEXT, " + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT )";
 
     private static RestaurantsData instance;
 
@@ -63,11 +63,13 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         // create a new content value to store values
         ContentValues values = new ContentValues();
-        values.put("id", id);
         values.put("name", name);
         values.put("price", price);
         values.put("rating", rating);
         values.put("delivery", delivery);
+
+        db.insert(TABLE_NAME, null, values);
+        db.close();
 
     }
 
