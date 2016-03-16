@@ -31,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
     Button searchButton;
 
     Intent toGoToSecondActivity;
-    int counter;
-    int clickCount;
+    int dollarOneCounter;
+    int dollarTwoCounter;
+    int dollarThreeCounter;
+    int dollarFourCounter;
+    int yesCounter;
+    int noCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,15 +87,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                while (ifTooManyItemsSelected()) {
-                    searchButton.setEnabled(false);
-//                    searchButton.setClickable(false);
+                if (ifTooManyItemsSelected() || ifNoItemsSelected()) {
                     return;
                 }
-                    run();
-//                    searchButton.setEnabled(true);
-                    searchButton.getText().toString();
-                    startActivity(toGoToSecondActivity);
+                searchButton.getText().toString();
+                startActivity(toGoToSecondActivity);
 
             }
         });
@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                searchButton.setEnabled(true);
+
                 dollarOne.setSelected(false);
                 dollarTwo.setSelected(false);
                 dollarThree.setSelected(false);
@@ -106,103 +108,116 @@ public class MainActivity extends AppCompatActivity {
                 yes.setSelected(false);
                 no.setSelected(false);
                 ratingBar.setRating(0);
-                clickCount++;
+                dollarOneCounter = 0;
+                dollarTwoCounter = 0;
+                dollarThreeCounter = 0;
+                dollarFourCounter = 0;
+                yesCounter = 0;
+                noCounter = 0;
             }
         });
 
         dollarOne.setOnClickListener(new View.OnClickListener() {
+//               int dollarOneCounter;
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (dollarOneCounter % 2 == 0) {
                     dollarOne.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
-                    dollarOne.setSelected(true);
-                } else dollarOne.setSelected(false);
-                counter++;
+                }  else dollarOne.setSelected(false);
+                dollarOneCounter++;
             }
         });
 
         dollarTwo.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (dollarTwoCounter % 2 == 0) {
                     dollarTwo.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
+//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarTwo.setSelected(true);
                 } else dollarTwo.setSelected(false);
-                counter++;
+                dollarTwoCounter++;
             }
         });
 
         dollarThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (dollarThreeCounter % 2 == 0) {
                     dollarThree.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
+//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarThree.setSelected(true);
                 } else dollarThree.setSelected(false);
-                counter++;
+                dollarThreeCounter++;
             }
         });
 
         dollarFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (dollarFourCounter % 2 == 0) {
                     dollarFour.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || yes.isSelected() || no.isSelected()) {
+//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarFour.setSelected(true);
                 } else dollarFour.setSelected(false);
-                counter++;
+                dollarFourCounter++;
             }
         });
 
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (yesCounter % 2 == 0) {
                     yes.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || no.isSelected()) {
+//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || no.isSelected()) {
                     yes.setSelected(true);
                 } else yes.setSelected(false);
-                counter++;
+                yesCounter++;
             }
         });
 
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter % 2 == 0) {
+                if (noCounter % 2 == 0) {
                     no.setSelected(true);
-                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected()) {
+//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected()) {
                     no.setSelected(true);
                 } else no.setSelected(false);
-                counter++;
+                noCounter++;
             }
         });
     }
 
     private boolean ifTooManyItemsSelected() {
 
-        if (dollarOne.isSelected() && dollarTwo.isSelected() && dollarThree.isSelected() && dollarFour.isSelected() && yes.isSelected() && no.isSelected()) {
+        if (dollarOne.isSelected() && dollarTwo.isSelected() && dollarThree.isSelected() && dollarFour.isSelected() && yes.isSelected() && no.isSelected() || yes.isSelected() && no.isSelected()) {
 //            searchButton.setEnabled(false);
-            Toast.makeText(MainActivity.this, "Please select your filter!", Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
-
-    private boolean isRatingZero() {
-        if (ratingBar.getRating() == 0) {
+            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
-    public void run() {
-        //re-enable the button
-        searchButton.setEnabled(true);
+    private boolean ifNoItemsSelected(){
 
+        if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
+            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    private boolean isRatingZero(boolean isTrue) {
+        if (ratingBar.getRating() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }
