@@ -118,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dollarOne.setOnClickListener(new View.OnClickListener() {
-//               int dollarOneCounter;
+            //               int dollarOneCounter;
             @Override
             public void onClick(View v) {
                 if (dollarOneCounter % 2 == 0) {
                     dollarOne.setSelected(true);
-                }  else dollarOne.setSelected(false);
+                } else dollarOne.setSelected(false);
                 dollarOneCounter++;
             }
         });
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean ifNoItemsSelected(){
+    private boolean ifNoItemsSelected() {
 
         if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
             Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
@@ -218,6 +218,29 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+//    private void databaseOfRestarants() {
+//
+//        RestaurantsData restaurant = new RestaurantsData(this);
+////
+//        restaurant.insert(1, "The Lunch Box", "$", (int) 4.0, "Delivery: YES");
+//        restaurant.insert(2, "Bacheesos", "$", (int) 3.5, "Delivery: YES");
+//        restaurant.insert(3, "Flora Restaurant & Bar", "$$$", (int) 4.0, "Delivery: NO");
+//        restaurant.insert(4, "Kingston 11 Cuisine", "$$$", (int) 4.0, "Delivery: NO");
+//        restaurant.insert(5, "Flora Restaurant & Bar", "$$", (int) 3.0, "Delivery: NO");
+//        restaurant.insert(6, "Ike’s Place", "$$", (int) 4.0, "Delivery: YES");
+//        restaurant.insert(7, "Picán", "$$$$", (int) 4.5, "Delivery: NO");
+//        restaurant.insert(8, "Fat Cat Cafe", "$", (int) 4.0, "Delivery: YES");
+//        restaurant.insert(9, "Liba Falafel", "$$", (int) 4.5, "Delivery: NO");
+//        restaurant.insert(10, "Xolo", "$", (int) 3.5, "Delivery: YES");
+//        restaurant.insert(11, "Hawker Fare", "$$$", (int) 3.0, "Delivery: NO");
+//        restaurant.insert(12, "Henry’s Gallery Cafe", "$", (int) 4.0, "Delivery: NO");
+//        restaurant.insert(13, "Mazzat Grill", "$$", (int) 5.0, "Delivery: YES");
+//        restaurant.insert(14, "Torpedo Sushi", "$$", (int) 4.0, "Delivery: YES");
+//        restaurant.insert(15, "Space Burger", "$$", (int) 2.5, "Delivery: NO");
+//
+//
+//    }
 
 
 }
