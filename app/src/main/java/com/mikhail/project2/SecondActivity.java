@@ -35,8 +35,8 @@ public class SecondActivity extends AppCompatActivity {
 
         RestaurantsData restaurant = new RestaurantsData(this);
 //
-        restaurant.insert(1, "The Lunch Box ", " $ ", " 4.0 ", " Delivery: YES");
-        restaurant.insert(2, "Bacheesos ", " $ ", " 3.5 ", " Delivery: YES");
+        restaurant.insert(1, "The Lunch Box ", "-$-", " ★4.0 ", " Delivery: YES");
+        restaurant.insert(2, "Bacheesos ", "-$-", " ★3.5 ", " Delivery: YES");
         restaurant.insert(3, "Flora Restaurant & Bar ", " $$$ ", " 4.0 ", " Delivery: NO");
         restaurant.insert(4, "Kingston 11 Cuisine ", " $$$ ", " 4.0 ", " Delivery: NO");
         restaurant.insert(5, "Flora Restaurant & Bar", " $$ ", " 3.0 ", " Delivery: NO");

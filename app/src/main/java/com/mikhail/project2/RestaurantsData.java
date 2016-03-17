@@ -35,7 +35,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     public static RestaurantsData getInstance(Context context) {
         if (instance == null) {
-            instance = new RestaurantsData(context);
+            instance = new RestaurantsData(context.getApplicationContext());
         }
         return instance;
     }
