@@ -3,9 +3,13 @@ package com.mikhail.project2;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     int yesCounter;
     int noCounter;
 
+    private static final boolean PREF_KEY_COUNTER_DEFAULT = false;
+    private static String PREF_KEY_COUNTER = "data";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,36 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         clickListenersMainActivity();
+        setSharedPreferences();
 
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.options_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        return true;
-
-//        getMenuInflater().inflate(R.menu.main2, menu);
-//        MenuItem myMenu = menu.findItem(R.id.action_settings);
-//
-//        myMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                return false;
-//            }
-//        });
-//
-//        return true;
-    }
-
-
 
 
     private void clickListenersMainActivity() {
@@ -102,12 +83,36 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if (ifTooManyItemsSelected() || ifNoItemsSelected()) {
+//                    return;
+//                } else if (dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected()) {
+//                    priceIsSelected = true;
+//                    searchButton.getText().toString();
 
-                if (ifTooManyItemsSelected() || ifNoItemsSelected()) {
+                int prices[] = getPriceSelections();
+                float rating = ratingBar.getRating();
+                String delivery = null;
+
+
+
+                if(yes.isSelected() && !no.isSelected()){
+                    delivery = yes.getText().toString();
+                }  else if(!yes.isSelected() && no.isSelected()){
+                    delivery = no.getText().toString();
+                } else if(yes.isSelected() && no.isSelected()){
+                    Toast.makeText(MainActivity.this, "Please select only one option of delivery!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                searchButton.getText().toString();
+
+                if(ifNoItemsSelected()) return;
+
+                toGoToSecondActivity.putExtra("price", prices);
+                toGoToSecondActivity.putExtra("rating",rating);
+                toGoToSecondActivity.putExtra("delivery", delivery);
+
                 startActivity(toGoToSecondActivity);
+//                }
+
 
             }
         });
@@ -115,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                searchButton.setEnabled(true);
 
                 dollarOne.setSelected(false);
                 dollarTwo.setSelected(false);
@@ -206,17 +210,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean ifTooManyItemsSelected() {
-
-        if (dollarOne.isSelected() && dollarTwo.isSelected() && dollarThree.isSelected() && dollarFour.isSelected() && yes.isSelected() && no.isSelected() || yes.isSelected() && no.isSelected()) {
-//            searchButton.setEnabled(false);
-            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+//    private boolean ifTooManyItemsSelected() {
+//
+//        if (dollarOne.isSelected() && dollarTwo.isSelected() && dollarThree.isSelected() && dollarFour.isSelected() && yes.isSelected() && no.isSelected() || yes.isSelected() && no.isSelected()) {
+////            searchButton.setEnabled(false);
+//            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
     private boolean ifNoItemsSelected() {
 
         if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
@@ -227,6 +231,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int[] getPriceSelections() {
+        int prices[] = new int[4];
+        if (dollarOne.isSelected()) prices[0] = 1;
+        if (dollarTwo.isSelected()) prices[1] = 1;
+        if (dollarThree.isSelected()) prices[2] = 1;
+        if (dollarFour.isSelected()) prices[3] = 1;
+        return prices;
+    }
+
     private boolean isRatingZero(boolean isTrue) {
         if (ratingBar.getRating() == 0) {
             return true;
@@ -235,28 +248,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void databaseOfRestarants() {
-//
-//        RestaurantsData restaurant = new RestaurantsData(this);
-////
-//        restaurant.insert(1, "The Lunch Box", "$", (int) 4.0, "Delivery: YES");
-//        restaurant.insert(2, "Bacheesos", "$", (int) 3.5, "Delivery: YES");
-//        restaurant.insert(3, "Flora Restaurant & Bar", "$$$", (int) 4.0, "Delivery: NO");
-//        restaurant.insert(4, "Kingston 11 Cuisine", "$$$", (int) 4.0, "Delivery: NO");
-//        restaurant.insert(5, "Flora Restaurant & Bar", "$$", (int) 3.0, "Delivery: NO");
-//        restaurant.insert(6, "Ike’s Place", "$$", (int) 4.0, "Delivery: YES");
-//        restaurant.insert(7, "Picán", "$$$$", (int) 4.5, "Delivery: NO");
-//        restaurant.insert(8, "Fat Cat Cafe", "$", (int) 4.0, "Delivery: YES");
-//        restaurant.insert(9, "Liba Falafel", "$$", (int) 4.5, "Delivery: NO");
-//        restaurant.insert(10, "Xolo", "$", (int) 3.5, "Delivery: YES");
-//        restaurant.insert(11, "Hawker Fare", "$$$", (int) 3.0, "Delivery: NO");
-//        restaurant.insert(12, "Henry’s Gallery Cafe", "$", (int) 4.0, "Delivery: NO");
-//        restaurant.insert(13, "Mazzat Grill", "$$", (int) 5.0, "Delivery: YES");
-//        restaurant.insert(14, "Torpedo Sushi", "$$", (int) 4.0, "Delivery: YES");
-//        restaurant.insert(15, "Space Burger", "$$", (int) 2.5, "Delivery: NO");
-//
-//
-//    }
+    private void insertData() {
+
+        RestaurantsData restaurant = new RestaurantsData(this);
+
+        restaurant.insert(1, "The Lunch Box ", "1", "4.0", "YES");
+        restaurant.insert(2, "Bacheesos ", "1", "3.5", "YES");
+        restaurant.insert(3, "Flora Restaurant & Bar ", "3", "4.0", "NO");
+        restaurant.insert(4, "Kingston 11 Cuisine ", "3", "4.0", "NO");
+        restaurant.insert(5, "Flora Restaurant & Bar", "2", "3.0", "NO");
+        restaurant.insert(6, "Ike’s Place ", "2", "4.0", "YES");
+        restaurant.insert(7, "Picán ", "4", "4.5", "NO");
+        restaurant.insert(8, "Fat Cat Cafe ", "1", "4.0", "YES");
+        restaurant.insert(9, "Liba Falafel ", "2", "4.5", "NO");
+        restaurant.insert(10, "Xolo ", "1", "3.5", "YES");
+        restaurant.insert(11, "Hawker Fare ", "3", "3.0", "NO");
+        restaurant.insert(12, "Henry’s Gallery Cafe ", "1", "4.0", "NO");
+        restaurant.insert(13, "Mazzat Grill ", "2", "5.0", "YES");
+        restaurant.insert(14, "Torpedo Sushi ", "2", "4.0", "YES");
+        restaurant.insert(15, "Space Burger ", "2", "2.5", "NO");
+
+    }
+
+    private void setSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (!getSharedPreferences()) {
+            insertData();
+            Log.e("MainActivity", "dataInserted!");
+            editor.putBoolean(PREF_KEY_COUNTER, true);
+            editor.apply();
+        }
+
+    }
+
+    private boolean getSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        return sharedPreferences.getBoolean(PREF_KEY_COUNTER, PREF_KEY_COUNTER_DEFAULT);
+    }
 
 
 }
