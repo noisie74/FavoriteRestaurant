@@ -1,25 +1,16 @@
 package com.mikhail.project2;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.logging.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -251,22 +242,21 @@ public class MainActivity extends AppCompatActivity {
     private void insertData() {
 
         RestaurantsData restaurant = new RestaurantsData(this);
-
-        restaurant.insert(1, "The Lunch Box ", "1", "4.0", "YES");
-        restaurant.insert(2, "Bacheesos ", "1", "3.5", "YES");
-        restaurant.insert(3, "Flora Restaurant & Bar ", "3", "4.0", "NO");
-        restaurant.insert(4, "Kingston 11 Cuisine ", "3", "4.0", "NO");
-        restaurant.insert(5, "Flora Restaurant & Bar", "2", "3.0", "NO");
-        restaurant.insert(6, "Ike’s Place ", "2", "4.0", "YES");
-        restaurant.insert(7, "Picán ", "4", "4.5", "NO");
-        restaurant.insert(8, "Fat Cat Cafe ", "1", "4.0", "YES");
-        restaurant.insert(9, "Liba Falafel ", "2", "4.5", "NO");
-        restaurant.insert(10, "Xolo ", "1", "3.5", "YES");
-        restaurant.insert(11, "Hawker Fare ", "3", "3.0", "NO");
-        restaurant.insert(12, "Henry’s Gallery Cafe ", "1", "4.0", "NO");
-        restaurant.insert(13, "Mazzat Grill ", "2", "5.0", "YES");
-        restaurant.insert(14, "Torpedo Sushi ", "2", "4.0", "YES");
-        restaurant.insert(15, "Space Burger ", "2", "2.5", "NO");
+        restaurant.insert(1, "The Lunch Box ", "1", "4.0", "YES", "1720 Franklin St, Oakland, CA 94612", "New American", R.drawable.lunchbox, false);
+        restaurant.insert(2, "Bacheesos ", "1", "3.5", "YES", "246 Grand Ave Oakland, CA 94610", "Mediterranean", R.drawable.bacheesos, false);
+        restaurant.insert(3, "Flora Restaurant & Bar ", "3", "4.0", "NO", "1900 Telegraph Ave, Oakland, CA 94612", "New American", R.drawable.flora, false);
+        restaurant.insert(4, "Kingston 11 Cuisine ", "3", "4.0", "NO", "2270 Telegraph Ave, Oakland, CA 94612", "Caribbean", R.drawable.kingston, false);
+        restaurant.insert(5, "Ozumo ", "3", "3.5", "NO", "2251 Broadway, Oakland, CA 94612", "Sushi Bars",R.drawable.ozumo, false );
+        restaurant.insert(6, "Ike’s Place ", "2", "4.0", "YES", "2204 Broadway, Oakland, CA 94612", "Sandwiches",R.drawable.ikes, false);
+        restaurant.insert(7, "Picán ", "4", "4.5", "NO", "2295 Broadway, Oakland, CA 94612", "Southern",R.drawable.pican, false);
+        restaurant.insert(8, "Fat Cat Cafe ", "1", "4.0", "YES", "1720 Telegraph Ave, Oakland, CA 94612", "Sandwiches",R.drawable.fatcat, false);
+        restaurant.insert(9, "Liba Falafel ", "2", "4.5", "NO", "380 17th St, Oakland, CA 94612", "Falafel", R.drawable.liba, false);
+        restaurant.insert(10, "Xolo ", "1", "3.5", "YES", "1916 Telegraph Ave, Oakland, CA 94612", "Mexican", R.drawable.xolo, false);
+        restaurant.insert(11, "Hawker Fare ", "3", "3.0", "NO", "301 Franklin St, Oakland, CA 94607", "Laotian", R.drawable.hawkefare, false);
+        restaurant.insert(12, "Henry’s Gallery Cafe ", "1", "4.0", "NO", "1700 Franklin St, Oakland, CA 94612", "New American", R.drawable.henry, false);
+        restaurant.insert(13, "Mazzat Grill ", "2", "5.0", "YES", "1924 Franklin St, Oakland, CA 94612", "Falafel", R.drawable.mazzat, false);
+        restaurant.insert(14, "Torpedo Sushi ", "2", "4.0", "YES", "25 Grand Ave, Oakland, CA 94612", "Sushi Bars", R.drawable.torpedo, false);
+        restaurant.insert(15, "Space Burger ", "2", "2.5", "NO", "2150 Telegraph Ave, Oakland, CA 94612", "Burgers", R.drawable.space, false);
 
     }
 

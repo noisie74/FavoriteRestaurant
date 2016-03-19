@@ -7,8 +7,11 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
@@ -41,19 +44,40 @@ public class SecondActivity extends AppCompatActivity {
         String deliverySelection = getIntent().getStringExtra("delivery");
 
 
+
+
         RestaurantsData dbSetup = new RestaurantsData(SecondActivity.this);
         dbSetup.getReadableDatabase();
 
 
-        Cursor cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
+        final Cursor cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
 
 
-        String[] columns = new String[]{RestaurantsData.COL_NAME, RestaurantsData.COL_PRICE, RestaurantsData.COL_RATING, RestaurantsData.COL_DELIVERY};
+        final String[] columns = new String[]{RestaurantsData.COL_NAME, RestaurantsData.COL_PRICE, RestaurantsData.COL_RATING, RestaurantsData.COL_DELIVERY};
         int[] viewNames = new int[]{R.id.text, R.id.text1, R.id.text2, R.id.text3,};
         CursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(SecondActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
 
         restaurantsList.setAdapter(simpleCursorAdapter);
 
+
+        restaurantsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                cursor.moveToPosition(position);
+                int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
+
+                String restaurantIDString =  cursor.getString(getDataFromCursor);
+                int restaurantID = (Integer.valueOf(restaurantIDString));
+
+                Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+
+
+                intent.putExtra("data", restaurantID); //sent key to DetailActivity in order to change header title there
+                startActivity(intent);
+                Log.d("restaurantIDString", "secondActivityIntent");
+            }
+        });
 
     }
 

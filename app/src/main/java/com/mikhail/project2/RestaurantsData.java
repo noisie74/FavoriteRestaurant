@@ -22,10 +22,19 @@ public class RestaurantsData extends SQLiteOpenHelper {
     public static final String COL_PRICE = "price";
     public static final String COL_RATING = "rating";
     public static final String COL_DELIVERY = "delivery";
-    public static final String[] TABLE_COLUMNS = {COL_ID, COL_NAME, COL_PRICE, COL_RATING, COL_DELIVERY};
+    public static final String COL_CONTACTS = "contacts";
+    public static final String COL_DESCRIPTION = "description";
+    public static final String COL_IMAGE = "image";
+    public static final String COL_FAVORITES = "favorites";
+
+
+    public static final String[] TABLE_COLUMNS = {COL_ID, COL_NAME, COL_PRICE, COL_RATING, COL_DELIVERY,
+            COL_CONTACTS, COL_DESCRIPTION, COL_IMAGE, COL_FAVORITES};
 
     private static final String SQL_CREATE_RESTAURANTS_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT, " + COL_PRICE + " TEXT, " + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT )";
+            "CREATE TABLE " + TABLE_NAME + "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT, " + COL_PRICE + " TEXT, "
+                    + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT, " + COL_CONTACTS + " TEXT, "
+                    + COL_DESCRIPTION + " TEXT, " + COL_IMAGE + " INTEGER, " + COL_FAVORITES + " BOOLEAN )";
 
     private static RestaurantsData instance;
 
@@ -58,7 +67,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     }
 
-    public void insert(int id, String name, String price, String rating, String delivery) {
+    public void insert(int id, String name, String price, String rating, String delivery, String contacts, String description, int image, boolean favorites) {
         // Get a reference to the database
         SQLiteDatabase db = getWritableDatabase();
 
@@ -68,11 +77,29 @@ public class RestaurantsData extends SQLiteOpenHelper {
         values.put("price", price);
         values.put("rating", rating);
         values.put("delivery", delivery);
+        values.put("contacts", contacts);
+        values.put("description", description);
+        values.put("image",image);
+        values.put("favorites",favorites);
 
         db.insert(TABLE_NAME, null, values);
         db.close();
 
     }
+
+    public void updateFavorites(int id, boolean favorites) {
+        // Get a reference to the database
+        SQLiteDatabase db = getWritableDatabase();
+
+        // create a new content value to store values
+        ContentValues values = new ContentValues();
+        values.put("favorites",favorites);
+
+        db.update(TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(id)});
+        db.close();
+
+    }
+
 
     public void delete(int id) {
         // Get a reference to the database
@@ -95,38 +122,38 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String whereClause = "";
+        String searchParameters = "";
 
         for (int i = 0; i < prices.length; i++) {
             if (prices[i] == 1) {
-                whereClause += " " + COL_PRICE + " = " + "\'" + String.valueOf(i + 1) + "\'";
-                whereClause += " OR ";
+                searchParameters += " " + COL_PRICE + " = " + "\'" + String.valueOf(i + 1) + "\'";
+                searchParameters += " OR ";
 
             }
         }
 
-        if (!whereClause.isEmpty())
-            whereClause = whereClause.substring(0, whereClause.length() - 4);
-        Log.e("TEST", "whereClause: " + whereClause);
+        if (!searchParameters.isEmpty())
+            searchParameters = searchParameters.substring(0, searchParameters.length() - 4);
+        Log.e("TEST","searchParameters: " + searchParameters);
 
 
         if (rating != 0) {
             Log.e("getRestaurantsList", "rating: " + rating);
-            String strRating = "\'" + rating + "\'";
+            String strRating = "\'" + String.valueOf(rating) + "\'";
 
-            if (whereClause != null) {
-                whereClause = whereClause + " AND " + COL_RATING + " = " + strRating;
+            if (searchParameters != null && !searchParameters.isEmpty()) {
+                searchParameters = searchParameters + " AND " + COL_RATING + " = " + strRating;
             } else {
-                whereClause = COL_RATING + " = " + strRating;
+                searchParameters = COL_RATING + " = " + strRating;
             }
         }
 
         if (delivery != null) {
 
-            if (whereClause != null) {
-                whereClause = whereClause + " AND " + COL_DELIVERY + " = " + "\'" + delivery + "\'";
+            if (searchParameters != null && !searchParameters.isEmpty()) {
+                searchParameters = searchParameters + " AND " + COL_DELIVERY + " = " + "\'" + delivery + "\'";
             } else {
-                whereClause = COL_DELIVERY + " = " + "\'" + delivery + "\'";
+                searchParameters = COL_DELIVERY + " = " + "\'" + delivery + "\'";
             }
         }
 
@@ -141,11 +168,11 @@ public class RestaurantsData extends SQLiteOpenHelper {
 //            strPrice = "$$$$";
 //        }
 
-        return db.query(TABLE_NAME, TABLE_COLUMNS, whereClause, null, null, null, null, null);
+        return db.query(TABLE_NAME, TABLE_COLUMNS, searchParameters, null, null, null, null, null);
     }
 
 
-    public String getRestaurantByPrice(int id) {
+    public Cursor getRestaurantByID(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
@@ -156,21 +183,13 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null);
 
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_PRICE));
-        } else {
-            return "No Restaurants Found";
-        }
+
+            return cursor;
+
+
     }
 
-    public String getRestaurantByRating(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " = ?",
-
-
-    public String getRestaurantByName(int id) {
+    public String getRestaurantByContacts(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
@@ -180,12 +199,67 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
-
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_NAME));
+        if(cursor.moveToFirst()){
+            return cursor.getString(cursor.getColumnIndex(COL_CONTACTS));
         } else {
-            return "No Restaurants Found";
+            return "No Description Found";
         }
+
     }
+
+    public String getRestaurantByDescription(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
+        } else {
+            return "No Description Found";
+        }
+
+    }
+
+    public String getRestaurantByImage(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(cursor.getColumnIndex(COL_IMAGE));
+        } else {
+            return "No Description Found";
+        }
+
+    }
+
+    public String getRestaurantByFavorites(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(cursor.getColumnIndex(COL_FAVORITES));
+        } else {
+            return "No Description Found";
+        }
+
+    }
+
 
 }
