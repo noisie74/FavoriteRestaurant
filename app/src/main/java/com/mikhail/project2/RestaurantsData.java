@@ -79,8 +79,8 @@ public class RestaurantsData extends SQLiteOpenHelper {
         values.put("delivery", delivery);
         values.put("contacts", contacts);
         values.put("description", description);
-        values.put("image",image);
-        values.put("favorites",favorites);
+        values.put("image", image);
+        values.put("favorites", favorites);
 
         db.insert(TABLE_NAME, null, values);
         db.close();
@@ -93,7 +93,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         // create a new content value to store values
         ContentValues values = new ContentValues();
-        values.put("favorites",favorites);
+        values.put("favorites", favorites);
 
         db.update(TABLE_NAME, values, "_id = ?", new String[]{String.valueOf(id)});
         db.close();
@@ -134,7 +134,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         if (!searchParameters.isEmpty())
             searchParameters = searchParameters.substring(0, searchParameters.length() - 4);
-        Log.e("TEST","searchParameters: " + searchParameters);
+        Log.e("TEST", "searchParameters: " + searchParameters);
 
 
         if (rating != 0) {
@@ -184,7 +184,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null);
 
 
-            return cursor;
+        return cursor;
 
 
     }
@@ -199,7 +199,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex(COL_CONTACTS));
         } else {
             return "No Description Found";
@@ -217,7 +217,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
         } else {
             return "No Description Found";
@@ -235,7 +235,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex(COL_IMAGE));
         } else {
             return "No Description Found";
@@ -253,7 +253,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex(COL_FAVORITES));
         } else {
             return "No Description Found";
@@ -262,4 +262,39 @@ public class RestaurantsData extends SQLiteOpenHelper {
     }
 
 
+    public Cursor getRestaurantByName(String COL_NAME) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
+                COL_ID + " LIKE ?",
+                new String[]{String.valueOf(COL_NAME)},
+                null,
+                null,
+                null,
+                null);
+
+        return cursor;
+    }
+
+
+    public Cursor getSearchResults(String query) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, // a. table
+                TABLE_COLUMNS, // b. column names
+                COL_NAME + " LIKE ?", // c. selections
+                new String[]{"%" + query + "%" }, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        return cursor;
+
+    }
+
 }
+
+
+

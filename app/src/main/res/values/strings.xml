@@ -10,6 +10,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="delivery_yes">Delivery: YES</string>
+    <string name="delivery_no">Delivery: NO</string>
+    <string name="rating4">Rating 4.0</string>
+    <string name="rating3">Rating 3.0</string>
+    <string name="rating35">Rating 3.5</string>
+    <string name="rating45">Rating 4.5</string>
+    <string name="rating5">Rating 5.0</string>
+    <string name="rating25">Rating 2.5</string>
+    <string name="price1">Price $</string>
+    <string name="price2">Price $$</string>
+    <string name="price3">Price $$$</string>
+    <string name="price4">Price $$$$</string>
+
     <string name="action_settings">Settings</string>
     <string name="search_hint">Search by restaurant name</string>
+    <string name="inFavorites"> In Favorites</string>
+    <string name="addToFavorites"> Add to Favorites</string>
 </resources>

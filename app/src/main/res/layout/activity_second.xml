@@ -23,6 +23,8 @@
         android:id="@+id/restaurantsList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:divider="@drawable/divider"
+        android:dividerHeight="16.0dp"
         android:layout_below="@+id/restaurants_count"
         android:layout_alignParentEnd="true">
     </ListView>

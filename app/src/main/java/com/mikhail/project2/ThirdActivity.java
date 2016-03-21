@@ -43,20 +43,22 @@ public class ThirdActivity extends AppCompatActivity {
         addToFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (favorites == 1){
+                if (favorites == 1) {
                     favorites = 0;
-                } else if (favorites == 0){
+                } else if (favorites == 0) {
                     favorites = 1;
+
                 }
-                updateFavoriteButton();
+                updateFavoriteDataBase();
+                updateColorOfFavoriteButton();
+
             }
         });
 
 
         fromSecondActivity = getIntent();
-         restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
+        restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
         if (restaurantID != DEFAULT_RESTAURANT_ID) {
-
 
 
             Cursor cursor = helper.getRestaurantByID(restaurantID);
@@ -73,8 +75,8 @@ public class ThirdActivity extends AppCompatActivity {
             String nameOfRestaurant = cursor.getString(index);
             favorites = cursor.getInt(indexFavorites);
 
-            updateFavoriteButton();
 
+            updateColorOfFavoriteButton();
 
             setTitle(nameOfRestaurant);
             restaurantContacts.setText(contacts);
@@ -87,18 +89,23 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
 
-    public void updateFavoriteButton(){
+    public void updateFavoriteDataBase() {
 
-        if (favorites == 0){
-            helper.updateFavorites(restaurantID, true);
-            addToFavorites.setBackgroundResource(android.R.color.holo_red_light);
-            addToFavorites.setText("Add to Favorites");
-
-        }
-        else if (favorites == 1){
+        if (favorites == 0) {
             helper.updateFavorites(restaurantID, false);
-            addToFavorites.setBackgroundResource(android.R.color.holo_blue_bright);
-            addToFavorites.setText("In Favorites");
+        } else if (favorites == 1) {
+            helper.updateFavorites(restaurantID, true);
+        }
+    }
+
+    public void updateColorOfFavoriteButton() {
+
+        if (favorites == 0) {
+            addToFavorites.setBackgroundResource(R.drawable.round_button);
+            addToFavorites.setText(R.string.addToFavorites);
+        } else if (favorites == 1) {
+            addToFavorites.setBackgroundResource(R.drawable.round_button2);
+            addToFavorites.setText(R.string.inFavorites);
         }
     }
 

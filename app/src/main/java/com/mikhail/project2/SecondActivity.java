@@ -12,9 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -24,6 +22,10 @@ public class SecondActivity extends AppCompatActivity {
     TextView restaurantsCountHeader;
     ListView restaurantsList;
     Intent secondActivityIntent;
+    Cursor cursor;
+    CursorAdapter simpleCursorAdapter;
+    Cursor newCursor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,7 @@ public class SecondActivity extends AppCompatActivity {
 
         secondActivityIntent = getIntent();
 
-
-        RestaurantsData helper = RestaurantsData.getInstance(SecondActivity.this);
+        onNewIntent(getIntent());
 
         int id = getIntent().getIntExtra("id", -1);
         int prices[] = getIntent().getIntArrayExtra("price");
@@ -45,17 +46,17 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
-
         RestaurantsData dbSetup = new RestaurantsData(SecondActivity.this);
         dbSetup.getReadableDatabase();
 
 
-        final Cursor cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
+        cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
 
 
         final String[] columns = new String[]{RestaurantsData.COL_NAME, RestaurantsData.COL_PRICE, RestaurantsData.COL_RATING, RestaurantsData.COL_DELIVERY};
         int[] viewNames = new int[]{R.id.text, R.id.text1, R.id.text2, R.id.text3,};
-        CursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(SecondActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
+        simpleCursorAdapter = new SimpleCursorAdapter(SecondActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
+
 
         restaurantsList.setAdapter(simpleCursorAdapter);
 
@@ -67,7 +68,7 @@ public class SecondActivity extends AppCompatActivity {
                 cursor.moveToPosition(position);
                 int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
 
-                String restaurantIDString =  cursor.getString(getDataFromCursor);
+                String restaurantIDString = cursor.getString(getDataFromCursor);
                 int restaurantID = (Integer.valueOf(restaurantIDString));
 
                 Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
@@ -78,6 +79,7 @@ public class SecondActivity extends AppCompatActivity {
                 Log.d("restaurantIDString", "secondActivityIntent");
             }
         });
+
 
     }
 
@@ -91,6 +93,7 @@ public class SecondActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
 
         return true;
 
@@ -106,5 +109,69 @@ public class SecondActivity extends AppCompatActivity {
 //
 //        return true;
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        Log.d("secondActivity", "clicked");
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
+
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+
+            newCursor = RestaurantsData.getInstance(SecondActivity.this).getSearchResults(query);
+//            int index = newCursor.getColumnIndex(RestaurantsData.COL_NAME);
+//            String nameOfRestaurants = newCursor.getString(index);
+
+//            newCursor.moveToPosition(index);
+            simpleCursorAdapter.swapCursor(newCursor);
+//            restaurantsList.setAdapter(simpleCursorAdapter);
+//            simpleCursorAdapter.notifyDataSetChanged();
+
+
+
+//            if (simpleCursorAdapter == null) {
+//                simpleCursorAdapter.changeCursor(newCursor);
+//                restaurantsList.setAdapter(simpleCursorAdapter);
+//                simpleCursorAdapter.notifyDataSetChanged();
+//            } else {
+//                simpleCursorAdapter.swapCursor(newCursor);
+//                simpleCursorAdapter.notifyDataSetChanged();
+//            }
+        }
+    }
+
+//    int id = getIntent().getIntExtra("id",-1);
+
+
+//    if(id >= 0){
+//        String description = helper.getDescriptionById(id);
+//        String type = helper.getTypeById(id);
+//        String price = helper.getPriceByID(id);
+//
+//
+//    searchView.setOnQueryTextListener(new
+//
+//    OnQueryTextListener() {
+//
+//        @Override
+//        public boolean onQueryTextSubmit (String key){
+//            //After you press Search/Enter control comes here with entered text in "key"
+//            return true;
+//        }
+//
+//        @Override
+//        public boolean onQueryTextChange (String key){
+//            //Each time you enter/modify a charcter, control comes here with entered text in "key"
+//            return true;
+//        }
+//    }
+//
+//    );
 
 }
