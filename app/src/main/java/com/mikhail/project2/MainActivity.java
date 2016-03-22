@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dollarOne.setOnClickListener(new View.OnClickListener() {
-            //               int dollarOneCounter;
             @Override
             public void onClick(View v) {
                 if (dollarOneCounter % 2 == 0) {
@@ -132,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dollarTwo.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (dollarTwoCounter % 2 == 0) {

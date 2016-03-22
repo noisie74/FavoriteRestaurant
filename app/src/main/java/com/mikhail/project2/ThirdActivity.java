@@ -21,14 +21,12 @@ public class ThirdActivity extends AppCompatActivity {
     TextView delivery;
     ImageView restaurantImage;
     Button addToFavorites;
-    int favorites;
     RestaurantsData helper;
     int restaurantID;
-    String dollarSymbols;
+    int favorites;
     int indexPrice;
     String priceOfRestaurant;
-
-
+    String dollarSymbols;
     private static final int DEFAULT_RESTAURANT_ID = -1;
 
     @Override
@@ -54,18 +52,16 @@ public class ThirdActivity extends AppCompatActivity {
                     favorites = 0;
                 } else if (favorites == 0) {
                     favorites = 1;
-
                 }
                 updateFavoriteDataBase();
                 updateColorOfFavoriteButton();
-
             }
         });
 
         fromSecondActivity = getIntent();
         restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
-        if (restaurantID != DEFAULT_RESTAURANT_ID) {
 
+        if (restaurantID != DEFAULT_RESTAURANT_ID) {
 
             Cursor cursor = helper.getRestaurantByID(restaurantID);
             cursor.moveToFirst();
@@ -77,11 +73,12 @@ public class ThirdActivity extends AppCompatActivity {
             int indexDelivery = cursor.getColumnIndex(RestaurantsData.COL_DELIVERY);
             int indexImage = cursor.getInt(cursor.getColumnIndex(RestaurantsData.COL_IMAGE));
 
-            String contacts = cursor.getString(indexContacts);
-            String description = cursor.getString(indexDescription);
             String nameOfRestaurant = cursor.getString(index);
+            String description = cursor.getString(indexDescription);
+            String contacts = cursor.getString(indexContacts);
             String ratingOfRestaurant = cursor.getString(indexRating);
             String deliveryOfRestaurant = cursor.getString(indexDelivery);
+
             String ratingStars = "Rating: ";
             String deliveryText = "Delivery: ";
 
@@ -124,6 +121,12 @@ public class ThirdActivity extends AppCompatActivity {
             helper.updateFavorites(restaurantID, false);
         } else if (favorites == 1) {
             helper.updateFavorites(restaurantID, true);
+//            Intent toFourthActivityIntent = new Intent(ThirdActivity.this, FourthActivity.class);
+//            Cursor cursorFavorites = RestaurantsData.getInstance(ThirdActivity.this).getRestaurantIfInFavorites();
+//            int restaurantID = cursorFavorites.getColumnIndex(RestaurantsData.COL_FAVORITES);
+//            toFourthActivityIntent.putExtra("updatedFavorites",restaurantID);
+//            startActivity(toFourthActivityIntent);
+
         }
     }
 

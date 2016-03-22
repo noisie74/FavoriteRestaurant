@@ -29,7 +29,7 @@
         android:layout_marginTop="160dp"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="$"
+        android:text="@string/one_dollar"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
         android:layout_toEndOf="@+id/dollarOne"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="$$"
+        android:text="@string/two_dollars"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -58,7 +58,7 @@
         android:layout_toEndOf="@+id/dollarTwo"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="$$$"
+        android:text="@string/three_dollars"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
         android:layout_toEndOf="@+id/dollarThree"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="$$$$"
+        android:text="@string/four_dollars"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -92,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120sp"
-        android:text="PRICE"
+        android:text="@string/filter_price"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp" />
 
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="210sp"
-        android:text="RATING"
+        android:text="@string/filter_rating"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp" />
 
@@ -113,7 +113,7 @@
         android:layout_alignEnd="@+id/header"
         android:layout_below="@+id/header"
         android:layout_marginTop="20dp"
-        android:text="CLEAR"
+        android:text="@string/clear_button_title"
         android:textSize="15sp" />
 
     <RatingBar
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="310dp"
-        android:text="DELIVERY"
+        android:text="@string/filter_delivery"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp" />
 
@@ -146,7 +146,7 @@
         android:layout_marginTop="350dp"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="YES"
+        android:text="@string/yes_delivery"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -160,7 +160,7 @@
         android:layout_toEndOf="@+id/yes"
         android:clickable="true"
         android:focusableInTouchMode="true"
-        android:text="NO"
+        android:text="@string/no_delivery"
         android:textSize="33sp"
         android:textStyle="bold" />
 
@@ -170,7 +170,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginTop="75dp"
-        android:text="Filter your Search:"
+        android:text="@string/filter_your_search_header"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 

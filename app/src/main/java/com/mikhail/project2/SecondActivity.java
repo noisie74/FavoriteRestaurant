@@ -39,11 +39,10 @@ public class SecondActivity extends AppCompatActivity {
 
         onNewIntent(getIntent());
 
-        int id = getIntent().getIntExtra("id", -1);
+//        int id = getIntent().getIntExtra("id", -1);
         int prices[] = getIntent().getIntArrayExtra("price");
         float ratingSelection = getIntent().getFloatExtra("rating", 0.0f);
         String deliverySelection = getIntent().getStringExtra("delivery");
-
 
         RestaurantsData dbSetup = new RestaurantsData(SecondActivity.this);
         dbSetup.getReadableDatabase();
@@ -72,8 +71,7 @@ public class SecondActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
 
-
-                intent.putExtra("data", restaurantID); //sent key to DetailActivity in order to change header title there
+                intent.putExtra("data", restaurantID);
                 startActivity(intent);
                 Log.d("restaurantIDString", "secondActivityIntent");
             }
@@ -99,15 +97,11 @@ public class SecondActivity extends AppCompatActivity {
 
                 Cursor cursorFavorites = RestaurantsData.getInstance(SecondActivity.this).getRestaurantIfInFavorites();
 
-//                simpleCursorAdapter.swapCursor(cursorFavorites);
-//                simpleCursorAdapter.notifyDataSetChanged();
-
                 int restaurantID = cursorFavorites.getColumnIndex(RestaurantsData.COL_FAVORITES);
 
                 Intent intent = new Intent(SecondActivity.this, FourthActivity.class);
 
-
-                intent.putExtra("data", restaurantID); //sent key to DetailActivity in order to change header title there
+                intent.putExtra("data", restaurantID);
                 startActivity(intent);
 
                 return true;

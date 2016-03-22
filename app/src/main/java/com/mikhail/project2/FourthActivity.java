@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -19,7 +21,11 @@ public class FourthActivity extends AppCompatActivity {
     final static int DEFAULT_VALUE = -1;
     RestaurantsData helper;
     SimpleCursorAdapter cursorAdapter;
-
+    Cursor cursor;
+//    Cursor cursorUpdatedFavorites;
+//    Intent fromThirdActivityIntent;
+//    int updatedFavoritesListFromThirdActivity;
+//    final static int DEFAULT_VALUE1 = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +38,15 @@ public class FourthActivity extends AppCompatActivity {
         fourthActivityIntent = getIntent();
         restaurantID = fourthActivityIntent.getIntExtra("data", DEFAULT_VALUE);
 
+//        fromThirdActivityIntent = getIntent();
+//        updatedFavoritesListFromThirdActivity = fourthActivityIntent.getIntExtra("updatedFavorites", DEFAULT_VALUE);
+
         helper = RestaurantsData.getInstance(FourthActivity.this);
 
 
+        if (restaurantID != DEFAULT_VALUE) {
 
-
-        if (restaurantID != DEFAULT_VALUE){
-
-            Cursor cursor = helper.getRestaurantIfInFavorites();
+            cursor = helper.getRestaurantIfInFavorites();
 
             cursor.moveToFirst();
 
@@ -48,9 +55,42 @@ public class FourthActivity extends AppCompatActivity {
             cursorAdapter = new SimpleCursorAdapter(FourthActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
 
             listView.setAdapter(cursorAdapter);
-
-
         }
 
+//        if (updatedFavoritesListFromThirdActivity != DEFAULT_VALUE1) {
+//
+//            cursorUpdatedFavorites = helper.getRestaurantIfInFavorites();
+//
+//            cursorUpdatedFavorites.moveToFirst();
+//
+//            cursorAdapter.swapCursor(cursorUpdatedFavorites);
+//            cursorAdapter.notifyDataSetChanged();
+//        }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                cursor.moveToPosition(position);
+                int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
+                String restaurantIDString = cursor.getString(getDataFromCursor);
+                int restaurantID = (Integer.valueOf(restaurantIDString));
+
+                Intent intent = new Intent(FourthActivity.this, ThirdActivity.class);
+
+                intent.putExtra("data", restaurantID);
+                startActivity(intent);
+
+
+            }
+        });
+
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        cursorAdapter.swapCursor(cursor);
+//        cursorAdapter.notifyDataSetChanged();
+//    }
 }

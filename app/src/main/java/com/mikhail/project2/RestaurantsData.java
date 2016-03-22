@@ -15,8 +15,6 @@ public class RestaurantsData extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Restaurants.db";
     public static final String TABLE_NAME = "restaurants";
-    //    public static final String SQL_CREATE_RESTAURANTS_TABLE =
-//            "CREATE TABLE restaurants ( _id INTEGER PRIMARY KEY, name TEXT, price TEXT, rating TEXT, delivery TEXT )";
     public static final String COL_ID = "_id";
     public static final String COL_NAME = "name";
     public static final String COL_PRICE = "price";
@@ -26,7 +24,6 @@ public class RestaurantsData extends SQLiteOpenHelper {
     public static final String COL_DESCRIPTION = "description";
     public static final String COL_IMAGE = "image";
     public static final String COL_FAVORITES = "favorites";
-
 
     public static final String[] TABLE_COLUMNS = {COL_ID, COL_NAME, COL_PRICE, COL_RATING, COL_DELIVERY,
             COL_CONTACTS, COL_DESCRIPTION, COL_IMAGE, COL_FAVORITES};
@@ -50,13 +47,10 @@ public class RestaurantsData extends SQLiteOpenHelper {
         return instance;
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(SQL_CREATE_RESTAURANTS_TABLE);
-
-
     }
 
     @Override
@@ -128,7 +122,6 @@ public class RestaurantsData extends SQLiteOpenHelper {
             if (prices[i] == 1) {
                 searchParameters += " " + COL_PRICE + " = " + "\'" + String.valueOf(i + 1) + "\'";
                 searchParameters += " OR ";
-
             }
         }
 
@@ -157,17 +150,6 @@ public class RestaurantsData extends SQLiteOpenHelper {
             }
         }
 
-
-//        if(price == 1){
-//            strPrice = "";
-//        } else if(price == 2){
-//            strPrice = "'$$";
-//        }else if(price == 3){
-//            strPrice = "$$$";
-//        }else if(price == 4){
-//            strPrice = "$$$$";
-//        }
-
         return db.query(TABLE_NAME, TABLE_COLUMNS, searchParameters, null, null, null, null, null);
     }
 
@@ -183,99 +165,9 @@ public class RestaurantsData extends SQLiteOpenHelper {
                 null,
                 null);
 
-
         return cursor;
 
-
     }
-
-    public String getRestaurantByContacts(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " = ?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_CONTACTS));
-        } else {
-            return "No Description Found";
-        }
-
-    }
-
-    public String getRestaurantByDescription(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " = ?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
-        } else {
-            return "No Description Found";
-        }
-
-    }
-
-    public String getRestaurantByImage(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " = ?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_IMAGE));
-        } else {
-            return "No Description Found";
-        }
-
-    }
-
-    public String getRestaurantByFavorites(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " = ?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(COL_FAVORITES));
-        } else {
-            return "No Description Found";
-        }
-
-    }
-
-
-    public Cursor getRestaurantByName(String COL_NAME) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
-                COL_ID + " LIKE ?",
-                new String[]{String.valueOf(COL_NAME)},
-                null,
-                null,
-                null,
-                null);
-
-        return cursor;
-    }
-
 
     public Cursor getSearchResults(String query) {
 
