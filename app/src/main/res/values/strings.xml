@@ -27,4 +27,5 @@
     <string name="search_hint">Search by restaurant name</string>
     <string name="inFavorites"> In Favorites</string>
     <string name="addToFavorites"> Add to Favorites</string>
+    <string name="saved_restaurants">Your saved restaurants:</string>
 </resources>

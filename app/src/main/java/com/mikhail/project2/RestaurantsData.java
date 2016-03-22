@@ -294,6 +294,22 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getRestaurantIfInFavorites() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
+                COL_FAVORITES + " = ?",
+                new String[]{String.valueOf(1)},
+                null,
+                null,
+                null,
+                null);
+
+        return cursor;
+
+    }
+
 }
 
 

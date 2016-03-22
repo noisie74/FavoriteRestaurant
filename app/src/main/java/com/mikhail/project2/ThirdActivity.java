@@ -16,12 +16,17 @@ public class ThirdActivity extends AppCompatActivity {
     TextView restaurantName;
     TextView restaurantDescription;
     TextView restaurantContacts;
-    TextView restaurantIsInFavorites;
+    TextView price;
+    TextView rating;
+    TextView delivery;
     ImageView restaurantImage;
     Button addToFavorites;
     int favorites;
     RestaurantsData helper;
     int restaurantID;
+    String dollarSymbols;
+    int indexPrice;
+    String priceOfRestaurant;
 
 
     private static final int DEFAULT_RESTAURANT_ID = -1;
@@ -34,7 +39,9 @@ public class ThirdActivity extends AppCompatActivity {
         restaurantName = (TextView) findViewById(R.id.restaurant_header);
         restaurantDescription = (TextView) findViewById(R.id.restaurant_description);
         restaurantContacts = (TextView) findViewById(R.id.restaurant_contacts);
-        restaurantIsInFavorites = (TextView) findViewById(R.id.restaurant_favorites);
+        price = (TextView) findViewById(R.id.price);
+        rating = (TextView) findViewById(R.id.rating);
+        delivery = (TextView) findViewById(R.id.delivery);
         restaurantImage = (ImageView) findViewById(R.id.restaurant_image);
         addToFavorites = (Button) findViewById(R.id.add_to_favorites);
 
@@ -55,7 +62,6 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
-
         fromSecondActivity = getIntent();
         restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
         if (restaurantID != DEFAULT_RESTAURANT_ID) {
@@ -67,14 +73,21 @@ public class ThirdActivity extends AppCompatActivity {
             int indexDescription = cursor.getColumnIndex(RestaurantsData.COL_DESCRIPTION);
             int indexContacts = cursor.getColumnIndex(RestaurantsData.COL_CONTACTS);
             int indexFavorites = cursor.getColumnIndex(RestaurantsData.COL_FAVORITES);
-
+            int indexRating = cursor.getColumnIndex(RestaurantsData.COL_RATING);
+            int indexDelivery = cursor.getColumnIndex(RestaurantsData.COL_DELIVERY);
             int indexImage = cursor.getInt(cursor.getColumnIndex(RestaurantsData.COL_IMAGE));
 
             String contacts = cursor.getString(indexContacts);
             String description = cursor.getString(indexDescription);
             String nameOfRestaurant = cursor.getString(index);
-            favorites = cursor.getInt(indexFavorites);
+            String ratingOfRestaurant = cursor.getString(indexRating);
+            String deliveryOfRestaurant = cursor.getString(indexDelivery);
+            String ratingStars = "Rating: ";
+            String deliveryText = "Delivery: ";
 
+            indexPrice = cursor.getColumnIndex(RestaurantsData.COL_PRICE);
+            priceOfRestaurant = cursor.getString(indexPrice);
+            favorites = cursor.getInt(indexFavorites);
 
             updateColorOfFavoriteButton();
 
@@ -82,10 +95,26 @@ public class ThirdActivity extends AppCompatActivity {
             restaurantContacts.setText(contacts);
             restaurantDescription.setText(description);
             restaurantImage.setImageResource(indexImage);
+            price.setText(getDollarSymbols());
+            rating.setText(ratingStars.concat(ratingOfRestaurant));
+            delivery.setText(deliveryText.concat(deliveryOfRestaurant));
 
         } else {
             Toast.makeText(ThirdActivity.this, "No description found", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String getDollarSymbols() {
+        if (Integer.parseInt(priceOfRestaurant) == 1) {
+            dollarSymbols = "$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 2) {
+            dollarSymbols = "$$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 3) {
+            dollarSymbols = "$$$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 4) {
+            dollarSymbols = "$$$$";
+        }
+        return dollarSymbols;
     }
 
 

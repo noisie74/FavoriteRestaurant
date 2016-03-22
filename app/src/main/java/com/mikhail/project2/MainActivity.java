@@ -74,36 +74,28 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (ifTooManyItemsSelected() || ifNoItemsSelected()) {
-//                    return;
-//                } else if (dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected()) {
-//                    priceIsSelected = true;
-//                    searchButton.getText().toString();
 
                 int prices[] = getPriceSelections();
                 float rating = ratingBar.getRating();
                 String delivery = null;
 
 
-
-                if(yes.isSelected() && !no.isSelected()){
+                if (yes.isSelected() && !no.isSelected()) {
                     delivery = yes.getText().toString();
-                }  else if(!yes.isSelected() && no.isSelected()){
+                } else if (!yes.isSelected() && no.isSelected()) {
                     delivery = no.getText().toString();
-                } else if(yes.isSelected() && no.isSelected()){
+                } else if (yes.isSelected() && no.isSelected()) {
                     Toast.makeText(MainActivity.this, "Please select only one option of delivery!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(ifNoItemsSelected()) return;
+                if (ifNoItemsSelected()) return;
 
                 toGoToSecondActivity.putExtra("price", prices);
-                toGoToSecondActivity.putExtra("rating",rating);
+                toGoToSecondActivity.putExtra("rating", rating);
                 toGoToSecondActivity.putExtra("delivery", delivery);
 
                 startActivity(toGoToSecondActivity);
-//                }
-
 
             }
         });
@@ -145,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (dollarTwoCounter % 2 == 0) {
                     dollarTwo.setSelected(true);
-//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarTwo.setSelected(true);
                 } else dollarTwo.setSelected(false);
                 dollarTwoCounter++;
@@ -157,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (dollarThreeCounter % 2 == 0) {
                     dollarThree.setSelected(true);
-//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarFour.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarThree.setSelected(true);
                 } else dollarThree.setSelected(false);
                 dollarThreeCounter++;
@@ -169,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (dollarFourCounter % 2 == 0) {
                     dollarFour.setSelected(true);
-//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || yes.isSelected() || no.isSelected()) {
                     dollarFour.setSelected(true);
                 } else dollarFour.setSelected(false);
                 dollarFourCounter++;
@@ -181,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (yesCounter % 2 == 0) {
                     yes.setSelected(true);
-//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || no.isSelected()) {
                     yes.setSelected(true);
                 } else yes.setSelected(false);
                 yesCounter++;
@@ -193,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (noCounter % 2 == 0) {
                     no.setSelected(true);
-//                } else if (clickCount % 2 == 0 || clickCount % 2 == 1 || dollarOne.isSelected() || dollarTwo.isSelected() || dollarThree.isSelected() || dollarFour.isSelected() || yes.isSelected()) {
                     no.setSelected(true);
                 } else no.setSelected(false);
                 noCounter++;
@@ -201,17 +188,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private boolean ifTooManyItemsSelected() {
-//
-//        if (dollarOne.isSelected() && dollarTwo.isSelected() && dollarThree.isSelected() && dollarFour.isSelected() && yes.isSelected() && no.isSelected() || yes.isSelected() && no.isSelected()) {
-////            searchButton.setEnabled(false);
-//            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
     private boolean ifNoItemsSelected() {
 
         if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
@@ -246,10 +222,10 @@ public class MainActivity extends AppCompatActivity {
         restaurant.insert(2, "Bacheesos", "1", "3.5", "YES", "246 Grand Ave Oakland, CA 94610", "Mediterranean", R.drawable.bacheesos, false);
         restaurant.insert(3, "Flora Restaurant & Bar", "3", "4.0", "Delivery: NO", "1900 Telegraph Ave, Oakland, CA 94612", "New American", R.drawable.flora, false);
         restaurant.insert(4, "Kingston 11 Cuisine", "3", "4.0", "NO", "2270 Telegraph Ave, Oakland, CA 94612", "Caribbean", R.drawable.kingston, false);
-        restaurant.insert(5, "Ozumo", "3", "3.5", "NO", "2251 Broadway, Oakland, CA 94612", "Sushi Bars",R.drawable.ozumo, false );
-        restaurant.insert(6, "Ike’s Place", "2", "4.0", "YES", "2204 Broadway, Oakland, CA 94612", "Sandwiches",R.drawable.ikes, false);
-        restaurant.insert(7, "Picán", "4", "4.5", "NO", "2295 Broadway, Oakland, CA 94612", "Southern",R.drawable.pican, false);
-        restaurant.insert(8, "Fat Cat Cafe", "1", "4.0", "YES", "1720 Telegraph Ave, Oakland, CA 94612", "Sandwiches",R.drawable.fatcat, false);
+        restaurant.insert(5, "Ozumo", "3", "3.5", "NO", "2251 Broadway, Oakland, CA 94612", "Sushi Bars", R.drawable.ozumo, false);
+        restaurant.insert(6, "Ike’s Place", "2", "4.0", "YES", "2204 Broadway, Oakland, CA 94612", "Sandwiches", R.drawable.ikes, false);
+        restaurant.insert(7, "Picán", "4", "4.5", "NO", "2295 Broadway, Oakland, CA 94612", "Southern", R.drawable.pican, false);
+        restaurant.insert(8, "Fat Cat Cafe", "1", "4.0", "YES", "1720 Telegraph Ave, Oakland, CA 94612", "Sandwiches", R.drawable.fatcat, false);
         restaurant.insert(9, "Liba Falafel", "2", "4.5", "NO", "380 17th St, Oakland, CA 94612", "Falafel", R.drawable.liba, false);
         restaurant.insert(10, "Xolo", "1", "3.5", "YES", "1916 Telegraph Ave, Oakland, CA 94612", "Mexican", R.drawable.xolo1, false);
         restaurant.insert(11, "Hawker Fare", "3", "3.0", "NO", "301 Franklin St, Oakland, CA 94607", "Laotian", R.drawable.hawkefare, false);
