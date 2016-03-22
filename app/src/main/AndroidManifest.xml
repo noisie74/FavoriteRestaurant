@@ -32,7 +32,7 @@
         <activity
             android:name=".ThirdActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".FourthActivity"
+        <activity android:name=".FavoriteListActivity"
             android:screenOrientation="portrait">
     </activity>
     </application>

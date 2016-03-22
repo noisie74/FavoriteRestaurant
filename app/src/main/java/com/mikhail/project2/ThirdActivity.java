@@ -121,11 +121,6 @@ public class ThirdActivity extends AppCompatActivity {
             helper.updateFavorites(restaurantID, false);
         } else if (favorites == 1) {
             helper.updateFavorites(restaurantID, true);
-//            Intent toFourthActivityIntent = new Intent(ThirdActivity.this, FourthActivity.class);
-//            Cursor cursorFavorites = RestaurantsData.getInstance(ThirdActivity.this).getRestaurantIfInFavorites();
-//            int restaurantID = cursorFavorites.getColumnIndex(RestaurantsData.COL_FAVORITES);
-//            toFourthActivityIntent.putExtra("updatedFavorites",restaurantID);
-//            startActivity(toFourthActivityIntent);
 
         }
     }
@@ -140,5 +135,6 @@ public class ThirdActivity extends AppCompatActivity {
             addToFavorites.setText(R.string.inFavorites);
         }
     }
+
 
 }

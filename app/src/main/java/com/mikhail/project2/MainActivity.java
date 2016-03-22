@@ -65,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
         clickListenersMainActivity();
         setSharedPreferences();
 
-
     }
-
 
     private void clickListenersMainActivity() {
 
@@ -250,6 +248,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean getSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         return sharedPreferences.getBoolean(PREF_KEY_COUNTER, PREF_KEY_COUNTER_DEFAULT);
+    }
+
+    private void dollarTextViewsClickListeners(){
+
+
+
     }
 
 

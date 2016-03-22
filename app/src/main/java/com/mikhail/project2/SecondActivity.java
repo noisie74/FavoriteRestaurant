@@ -39,7 +39,6 @@ public class SecondActivity extends AppCompatActivity {
 
         onNewIntent(getIntent());
 
-//        int id = getIntent().getIntExtra("id", -1);
         int prices[] = getIntent().getIntArrayExtra("price");
         float ratingSelection = getIntent().getFloatExtra("rating", 0.0f);
         String deliverySelection = getIntent().getStringExtra("delivery");
@@ -99,7 +98,7 @@ public class SecondActivity extends AppCompatActivity {
 
                 int restaurantID = cursorFavorites.getColumnIndex(RestaurantsData.COL_FAVORITES);
 
-                Intent intent = new Intent(SecondActivity.this, FourthActivity.class);
+                Intent intent = new Intent(SecondActivity.this, FavoriteListActivity.class);
 
                 intent.putExtra("data", restaurantID);
                 startActivity(intent);
