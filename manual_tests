@@ -1,0 +1,53 @@
+1. User should be able to search for restaurants using price filters
+- Open the app
+- Select any of the dollar signs
+- Tap on search button
+Expected result: user is redirected to next activity with restaurants matching search criteria 
+
+2. User should be able to search for restaurants using rating filter
+- Open the app
+- Select number of rating stars 
+- Tap on search button
+Expected result: user is redirected to next activity with restaurants matching search criteria 
+
+3. User should be able to search for restaurants using delivery filter
+- Open the app
+- Select "yes" or "no" delivery 
+- Tap on search button
+Expected result: user is redirected to next activity with restaurants matching search criteria 
+
+4. User shouldn't be able to search for restaurants when both delivery filters are selected
+- Open the app
+- Select "yes" and "no" filters
+- Tap on search button
+Expected result:user should see toast message that warns to select appropriate search filters
+
+5. User shouldn't be able to search for restaurants when no filters are selected
+- Open the app
+- Tap on search button
+Expected result:user should see toast message that warns to specify search
+
+6. User should be able to see detailed restaurant description
+- Open the app
+- Select any search filter
+- Tap on search button
+- Tap on any restaurant in the list
+Expected result:user should see detailed restaurant description with image, price, rating, delivery and address
+
+7. User should be able to search for a restaurant by its name
+- Open the app
+- Select any search filter
+- Tap on search button
+- Tap on the search icon at the tool bar
+- Enter any name at the search field
+- Tap search
+Expected result:user should be able to search for a restaurant by its name and see correct results
+
+8. User should be able to unselect all search filters by clicking "Clear" button
+- Open the app
+- Select any search filter or all filters
+- Tap on "Clear" button
+Expected result:by clicking "Clear" button user should unselect all previously selected search filters
+
+
+
