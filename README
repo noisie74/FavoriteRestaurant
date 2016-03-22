@@ -1,1 +1,9 @@
+"Your favorite restaurant" application
 
+Allows user to search for restaurants in Uptown Oakland neighborhood
+using filters: price, rating and delivery
+Search manager option allows user to look for a restaurant by name
+User has an option to add/remove restaurants to/from "Favorites" 
+and look for restaurants in "Favorites" by using star button at the toolbar
+
+Developed by Michael Borisovskiy
