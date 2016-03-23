@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     RatingBar ratingBar;
     Button clearButton;
     Button searchButton;
-
     Intent toGoToSecondActivity;
     int dollarOneCounter;
     int dollarTwoCounter;
@@ -63,60 +62,93 @@ public class MainActivity extends AppCompatActivity {
 
 
         clickListenersMainActivity();
-        setSharedPreferences();
+        setSharedPreferences(); // Call SharedPreferences not to get duplicated data from database
 
     }
 
-    private void clickListenersMainActivity() {
+    private void clickListenersMainActivity() { // Call all clickListeners methods
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        dollarTextViewsClickListeners();
+        deliveryYesNoClickListeners();
+        searchButtonClickListener();
+        clearButtonClickListener();
 
-                int prices[] = getPriceSelections();
-                float rating = ratingBar.getRating();
-                String delivery = null;
+    }
+
+    private boolean ifNoItemsSelected() {  // Check if none of the filters(TextViews and ratingBar) are selected
+
+        if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
+            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private int[] getPriceSelections() {  // Create array of ints object that holds selected prices
+        int prices[] = new int[4];
+        if (dollarOne.isSelected()) prices[0] = 1;
+        if (dollarTwo.isSelected()) prices[1] = 1;
+        if (dollarThree.isSelected()) prices[2] = 1;
+        if (dollarFour.isSelected()) prices[3] = 1;
+        return prices;
+    }
+
+    private boolean isRatingZero(boolean isTrue) {  // Check if the ratingBar has no stars
+        if (ratingBar.getRating() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void insertData() {  // Insert data into the "RestaurantsData" Database
+
+        RestaurantsData restaurant = new RestaurantsData(this);
+        restaurant.insert(1, "The Lunch Box", "1", "4.0", "YES", "1720 Franklin St, Oakland, CA 94612", "New American", R.drawable.lunchbox, false);
+        restaurant.insert(2, "Bacheesos", "1", "3.5", "YES", "246 Grand Ave Oakland, CA 94610", "Mediterranean", R.drawable.bacheesos, false);
+        restaurant.insert(3, "Flora Restaurant & Bar", "3", "4.0", "Delivery: NO", "1900 Telegraph Ave, Oakland, CA 94612", "New American", R.drawable.flora, false);
+        restaurant.insert(4, "Kingston 11 Cuisine", "3", "4.0", "NO", "2270 Telegraph Ave, Oakland, CA 94612", "Caribbean", R.drawable.kingston, false);
+        restaurant.insert(5, "Ozumo", "3", "3.5", "NO", "2251 Broadway, Oakland, CA 94612", "Sushi Bars", R.drawable.ozumo, false);
+        restaurant.insert(6, "Ike’s Place", "2", "4.0", "YES", "2204 Broadway, Oakland, CA 94612", "Sandwiches", R.drawable.ikes, false);
+        restaurant.insert(7, "Picán", "4", "4.5", "NO", "2295 Broadway, Oakland, CA 94612", "Southern", R.drawable.pican, false);
+        restaurant.insert(8, "Fat Cat Cafe", "1", "4.0", "YES", "1720 Telegraph Ave, Oakland, CA 94612", "Sandwiches", R.drawable.fatcat, false);
+        restaurant.insert(9, "Liba Falafel", "2", "4.5", "NO", "380 17th St, Oakland, CA 94612", "Falafel", R.drawable.liba, false);
+        restaurant.insert(10, "Xolo", "1", "3.5", "YES", "1916 Telegraph Ave, Oakland, CA 94612", "Mexican", R.drawable.xolo1, false);
+        restaurant.insert(11, "Hawker Fare", "3", "3.0", "NO", "301 Franklin St, Oakland, CA 94607", "Laotian", R.drawable.hawkefare, false);
+        restaurant.insert(12, "Henry’s Gallery Cafe", "1", "4.0", "NO", "1700 Franklin St, Oakland, CA 94612", "New American", R.drawable.henry, false);
+        restaurant.insert(13, "Mazzat Grill", "2", "5.0", "YES", "1924 Franklin St, Oakland, CA 94612", "Falafel", R.drawable.mazzat, false);
+        restaurant.insert(14, "Torpedo Sushi", "2", "4.0", "YES", "25 Grand Ave, Oakland, CA 94612", "Sushi Bars", R.drawable.torpedo, false);
+        restaurant.insert(15, "Space Burger", "2", "Rating: 2.5", "Delivery: NO", "2150 Telegraph Ave, Oakland, CA 94612", "Burgers", R.drawable.space, false);
+
+    }
+
+    private void setSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (!getSharedPreferences()) {
+            insertData();
+            Log.e("MainActivity", "dataInserted!");
+            editor.putBoolean(PREF_KEY_COUNTER, true);
+            editor.apply();
+        }
+
+    }
+
+    private boolean getSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        return sharedPreferences.getBoolean(PREF_KEY_COUNTER, PREF_KEY_COUNTER_DEFAULT);
+    }
 
 
-                if (yes.isSelected() && !no.isSelected()) {
-                    delivery = yes.getText().toString();
-                } else if (!yes.isSelected() && no.isSelected()) {
-                    delivery = no.getText().toString();
-                } else if (yes.isSelected() && no.isSelected()) {
-                    Toast.makeText(MainActivity.this, "Please select only one option of delivery!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+    /**
+     clickListeners methods for all the widgets
+     of MainActivity
 
-                if (ifNoItemsSelected()) return;
+     */
 
-                toGoToSecondActivity.putExtra("price", prices);
-                toGoToSecondActivity.putExtra("rating", rating);
-                toGoToSecondActivity.putExtra("delivery", delivery);
-
-                startActivity(toGoToSecondActivity);
-
-            }
-        });
-
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dollarOne.setSelected(false);
-                dollarTwo.setSelected(false);
-                dollarThree.setSelected(false);
-                dollarFour.setSelected(false);
-                yes.setSelected(false);
-                no.setSelected(false);
-                ratingBar.setRating(0);
-                dollarOneCounter = 0;
-                dollarTwoCounter = 0;
-                dollarThreeCounter = 0;
-                dollarFourCounter = 0;
-                yesCounter = 0;
-                noCounter = 0;
-            }
-        });
+    private void dollarTextViewsClickListeners() {
 
         dollarOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void deliveryYesNoClickListeners() {
+
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,79 +218,64 @@ public class MainActivity extends AppCompatActivity {
                 noCounter++;
             }
         });
-    }
-
-    private boolean ifNoItemsSelected() {
-
-        if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
-            Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private int[] getPriceSelections() {
-        int prices[] = new int[4];
-        if (dollarOne.isSelected()) prices[0] = 1;
-        if (dollarTwo.isSelected()) prices[1] = 1;
-        if (dollarThree.isSelected()) prices[2] = 1;
-        if (dollarFour.isSelected()) prices[3] = 1;
-        return prices;
-    }
-
-    private boolean isRatingZero(boolean isTrue) {
-        if (ratingBar.getRating() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void insertData() {
-
-        RestaurantsData restaurant = new RestaurantsData(this);
-        restaurant.insert(1, "The Lunch Box", "1", "4.0", "YES", "1720 Franklin St, Oakland, CA 94612", "New American", R.drawable.lunchbox, false);
-        restaurant.insert(2, "Bacheesos", "1", "3.5", "YES", "246 Grand Ave Oakland, CA 94610", "Mediterranean", R.drawable.bacheesos, false);
-        restaurant.insert(3, "Flora Restaurant & Bar", "3", "4.0", "Delivery: NO", "1900 Telegraph Ave, Oakland, CA 94612", "New American", R.drawable.flora, false);
-        restaurant.insert(4, "Kingston 11 Cuisine", "3", "4.0", "NO", "2270 Telegraph Ave, Oakland, CA 94612", "Caribbean", R.drawable.kingston, false);
-        restaurant.insert(5, "Ozumo", "3", "3.5", "NO", "2251 Broadway, Oakland, CA 94612", "Sushi Bars", R.drawable.ozumo, false);
-        restaurant.insert(6, "Ike’s Place", "2", "4.0", "YES", "2204 Broadway, Oakland, CA 94612", "Sandwiches", R.drawable.ikes, false);
-        restaurant.insert(7, "Picán", "4", "4.5", "NO", "2295 Broadway, Oakland, CA 94612", "Southern", R.drawable.pican, false);
-        restaurant.insert(8, "Fat Cat Cafe", "1", "4.0", "YES", "1720 Telegraph Ave, Oakland, CA 94612", "Sandwiches", R.drawable.fatcat, false);
-        restaurant.insert(9, "Liba Falafel", "2", "4.5", "NO", "380 17th St, Oakland, CA 94612", "Falafel", R.drawable.liba, false);
-        restaurant.insert(10, "Xolo", "1", "3.5", "YES", "1916 Telegraph Ave, Oakland, CA 94612", "Mexican", R.drawable.xolo1, false);
-        restaurant.insert(11, "Hawker Fare", "3", "3.0", "NO", "301 Franklin St, Oakland, CA 94607", "Laotian", R.drawable.hawkefare, false);
-        restaurant.insert(12, "Henry’s Gallery Cafe", "1", "4.0", "NO", "1700 Franklin St, Oakland, CA 94612", "New American", R.drawable.henry, false);
-        restaurant.insert(13, "Mazzat Grill", "2", "5.0", "YES", "1924 Franklin St, Oakland, CA 94612", "Falafel", R.drawable.mazzat, false);
-        restaurant.insert(14, "Torpedo Sushi", "2", "4.0", "YES", "25 Grand Ave, Oakland, CA 94612", "Sushi Bars", R.drawable.torpedo, false);
-        restaurant.insert(15, "Space Burger", "2", "Rating: 2.5", "Delivery: NO", "2150 Telegraph Ave, Oakland, CA 94612", "Burgers", R.drawable.space, false);
 
     }
 
-    private void setSharedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    private void searchButtonClickListener() {
 
-        if (!getSharedPreferences()) {
-            insertData();
-            Log.e("MainActivity", "dataInserted!");
-            editor.putBoolean(PREF_KEY_COUNTER, true);
-            editor.apply();
-        }
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int prices[] = getPriceSelections();
+                float rating = ratingBar.getRating();
+                String delivery = null;
+
+
+                if (yes.isSelected() && !no.isSelected()) {
+                    delivery = yes.getText().toString();
+                } else if (!yes.isSelected() && no.isSelected()) {
+                    delivery = no.getText().toString();
+                } else if (yes.isSelected() && no.isSelected()) {
+                    Toast.makeText(MainActivity.this, "Please select only one option of delivery!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (ifNoItemsSelected()) return;
+
+                toGoToSecondActivity.putExtra("price", prices);
+                toGoToSecondActivity.putExtra("rating", rating);
+                toGoToSecondActivity.putExtra("delivery", delivery);
+
+                startActivity(toGoToSecondActivity);
+
+            }
+        });
 
     }
 
-    private boolean getSharedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        return sharedPreferences.getBoolean(PREF_KEY_COUNTER, PREF_KEY_COUNTER_DEFAULT);
+    private void clearButtonClickListener() {
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dollarOne.setSelected(false);
+                dollarTwo.setSelected(false);
+                dollarThree.setSelected(false);
+                dollarFour.setSelected(false);
+                yes.setSelected(false);
+                no.setSelected(false);
+                ratingBar.setRating(0);
+                dollarOneCounter = 0;
+                dollarTwoCounter = 0;
+                dollarThreeCounter = 0;
+                dollarFourCounter = 0;
+                yesCounter = 0;
+                noCounter = 0;
+            }
+        });
+
     }
-
-    private void dollarTextViewsClickListeners(){
-
-
-
-    }
-
 
 }

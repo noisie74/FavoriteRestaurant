@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Created by Mikhail on 3/15/16.
+ * This  class creates SQLite Database
+ * with it's methods
  */
 public class RestaurantsData extends SQLiteOpenHelper {
 
@@ -33,8 +34,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
                     + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT, " + COL_CONTACTS + " TEXT, "
                     + COL_DESCRIPTION + " TEXT, " + COL_IMAGE + " INTEGER, " + COL_FAVORITES + " BOOLEAN )";
 
-    private static RestaurantsData instance;
-
+    private static RestaurantsData instance; // singleton class of Restaurants database
 
     public RestaurantsData(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,7 +48,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) { // create database
 
         db.execSQL(SQL_CREATE_RESTAURANTS_TABLE);
     }
@@ -60,6 +60,20 @@ public class RestaurantsData extends SQLiteOpenHelper {
         this.onCreate(db);
 
     }
+
+    /**
+     *  this method creates columns into the database
+     *
+     * @param id
+     * @param name
+     * @param price
+     * @param rating
+     * @param delivery
+     * @param contacts
+     * @param description
+     * @param image
+     * @param favorites
+     */
 
     public void insert(int id, String name, String price, String rating, String delivery, String contacts, String description, int image, boolean favorites) {
         // Get a reference to the database
@@ -81,7 +95,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     }
 
-    public void updateFavorites(int id, boolean favorites) {
+    public void updateFavorites(int id, boolean favorites) { // this method updates Favorites column into database
         // Get a reference to the database
         SQLiteDatabase db = getWritableDatabase();
 
@@ -93,7 +107,6 @@ public class RestaurantsData extends SQLiteOpenHelper {
         db.close();
 
     }
-
 
     public void delete(int id) {
         // Get a reference to the database
@@ -110,7 +123,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
         db.delete("restaurants", selection, selectionArgs);
     }
 
-    public Cursor getRestaurantsList(int prices[], float rating, String delivery) {
+    public Cursor getRestaurantsList(int prices[], float rating, String delivery) {  // in charge for returning data according set filters
 
         Log.e("RestaurantData", " rating: " + rating + " delivery: " + delivery);
 
@@ -154,7 +167,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getRestaurantByID(int id) {
+    public Cursor getRestaurantByID(int id) { // returns restaurants by Primary Key - ID
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
@@ -169,7 +182,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getSearchResults(String query) {
+    public Cursor getSearchResults(String query) { // returns search results for Search Manager
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -186,7 +199,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getRestaurantIfInFavorites() {
+    public Cursor getRestaurantIfInFavorites() { // returns the column of restaurants that are in Favorites
         SQLiteDatabase db = this.getReadableDatabase();
 
 

@@ -10,8 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mikhail.project2.SecondActivity">
 
-
-
     <TextView
         android:text="@string/restaurants_count"
         android:textColor="@color/colorPrimaryDark"

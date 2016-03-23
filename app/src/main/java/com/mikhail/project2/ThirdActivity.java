@@ -45,6 +45,51 @@ public class ThirdActivity extends AppCompatActivity {
 
         helper = RestaurantsData.getInstance(ThirdActivity.this);
 
+        addToFavoritesClickListener();
+
+        fromSecondActivity = getIntent();
+        restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
+
+        getDataFromSecondActivityAndInsertItToView();
+
+    }
+
+    private String getDollarSymbols() { // adds dollar symbols to price textViews
+        if (Integer.parseInt(priceOfRestaurant) == 1) {
+            dollarSymbols = "$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 2) {
+            dollarSymbols = "$$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 3) {
+            dollarSymbols = "$$$";
+        } else if (Integer.parseInt(priceOfRestaurant) == 4) {
+            dollarSymbols = "$$$$";
+        }
+        return dollarSymbols;
+    }
+
+
+    private void updateFavoriteDataBase() { // adds or removes restaurants from Favorite Column in database
+
+        if (favorites == 0) {
+            helper.updateFavorites(restaurantID, false);
+        } else if (favorites == 1) {
+            helper.updateFavorites(restaurantID, true);
+        }
+    }
+
+    private void updateColorOfFavoriteButton() { // updates color of favoriteButton
+
+        if (favorites == 0) {
+            addToFavorites.setBackgroundResource(R.drawable.round_button);
+            addToFavorites.setText(R.string.addToFavorites);
+        } else if (favorites == 1) {
+            addToFavorites.setBackgroundResource(R.drawable.round_button2);
+            addToFavorites.setText(R.string.inFavorites);
+        }
+    }
+
+    private void addToFavoritesClickListener() { // clickListener of favoriteButton
+
         addToFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +103,20 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
-        fromSecondActivity = getIntent();
-        restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
+    }
+
+    /**
+     this method gets data from SecondActivity
+     and inserts it to View widgets
+     */
+
+    private void getDataFromSecondActivityAndInsertItToView() {
 
         if (restaurantID != DEFAULT_RESTAURANT_ID) {
 
             Cursor cursor = helper.getRestaurantByID(restaurantID);
             cursor.moveToFirst();
+
             int index = cursor.getColumnIndex(RestaurantsData.COL_NAME);
             int indexDescription = cursor.getColumnIndex(RestaurantsData.COL_DESCRIPTION);
             int indexContacts = cursor.getColumnIndex(RestaurantsData.COL_CONTACTS);
@@ -95,46 +147,8 @@ public class ThirdActivity extends AppCompatActivity {
             price.setText(getDollarSymbols());
             rating.setText(ratingStars.concat(ratingOfRestaurant));
             delivery.setText(deliveryText.concat(deliveryOfRestaurant));
-
-        } else {
-            Toast.makeText(ThirdActivity.this, "No description found", Toast.LENGTH_SHORT).show();
         }
+
     }
-
-    public String getDollarSymbols() {
-        if (Integer.parseInt(priceOfRestaurant) == 1) {
-            dollarSymbols = "$";
-        } else if (Integer.parseInt(priceOfRestaurant) == 2) {
-            dollarSymbols = "$$";
-        } else if (Integer.parseInt(priceOfRestaurant) == 3) {
-            dollarSymbols = "$$$";
-        } else if (Integer.parseInt(priceOfRestaurant) == 4) {
-            dollarSymbols = "$$$$";
-        }
-        return dollarSymbols;
-    }
-
-
-    public void updateFavoriteDataBase() {
-
-        if (favorites == 0) {
-            helper.updateFavorites(restaurantID, false);
-        } else if (favorites == 1) {
-            helper.updateFavorites(restaurantID, true);
-
-        }
-    }
-
-    public void updateColorOfFavoriteButton() {
-
-        if (favorites == 0) {
-            addToFavorites.setBackgroundResource(R.drawable.round_button);
-            addToFavorites.setText(R.string.addToFavorites);
-        } else if (favorites == 1) {
-            addToFavorites.setBackgroundResource(R.drawable.round_button2);
-            addToFavorites.setText(R.string.inFavorites);
-        }
-    }
-
 
 }

@@ -36,10 +36,14 @@ public class FavoriteListActivity extends AppCompatActivity {
         helper = RestaurantsData.getInstance(FavoriteListActivity.this);
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // set items in the list clickable
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                /**
+                 get data from database using primary key - ID
+                 and send it to ThirdActivity
+                 */
 
                 cursor.moveToPosition(position);
                 int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
@@ -51,15 +55,14 @@ public class FavoriteListActivity extends AppCompatActivity {
                 intent.putExtra("data", restaurantID);
                 startActivity(intent);
 
-
             }
         });
 
     }
 
     @Override
-    protected void onResume() {
-         super.onResume();
+    protected void onResume() { // if user removes restaurant from favorites onResume shows correct restaurant List
+        super.onResume();
 
         if (restaurantID != DEFAULT_VALUE) {
 
@@ -67,6 +70,9 @@ public class FavoriteListActivity extends AppCompatActivity {
 
             cursor.moveToFirst();
 
+            /**
+             create simpleCursorAdapter and set it to ListView
+             */
             final String[] columns = new String[]{RestaurantsData.COL_NAME};
             int[] viewNames = new int[]{R.id.text};
             cursorAdapter = new SimpleCursorAdapter(FavoriteListActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
