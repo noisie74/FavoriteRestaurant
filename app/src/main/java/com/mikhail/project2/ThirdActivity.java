@@ -131,6 +131,7 @@ public class ThirdActivity extends AppCompatActivity {
             String ratingOfRestaurant = cursor.getString(indexRating);
             String deliveryOfRestaurant = cursor.getString(indexDelivery);
 
+
             String ratingStars = "Rating: ";
             String deliveryText = "Delivery: ";
 

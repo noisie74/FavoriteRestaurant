@@ -107,7 +107,7 @@ public class SecondActivity extends AppCompatActivity {
         float ratingSelection = getIntent().getFloatExtra("rating", 0.0f);
         String deliverySelection = getIntent().getStringExtra("delivery");
 
-        RestaurantsData dbSetup = new RestaurantsData(SecondActivity.this);
+        RestaurantsData dbSetup =  RestaurantsData.getInstance(SecondActivity.this);
         dbSetup.getReadableDatabase();
 
         cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);

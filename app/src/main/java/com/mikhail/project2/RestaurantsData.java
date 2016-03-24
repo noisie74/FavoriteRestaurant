@@ -36,7 +36,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     private static RestaurantsData instance; // singleton class of Restaurants database
 
-    public RestaurantsData(Context context) {
+    private RestaurantsData(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -147,7 +147,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
             Log.e("getRestaurantsList", "rating: " + rating);
             String strRating = "\'" + String.valueOf(rating) + "\'";
 
-            if (searchParameters != null && !searchParameters.isEmpty()) {
+            if (!searchParameters.isEmpty()) {
                 searchParameters = searchParameters + " AND " + COL_RATING + " = " + strRating;
             } else {
                 searchParameters = COL_RATING + " = " + strRating;
@@ -156,7 +156,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         if (delivery != null) {
 
-            if (searchParameters != null && !searchParameters.isEmpty()) {
+            if (!searchParameters.isEmpty()) {
                 searchParameters = searchParameters + " AND " + COL_DELIVERY + " = " + "\'" + delivery + "\'";
             } else {
                 searchParameters = COL_DELIVERY + " = " + "\'" + delivery + "\'";
