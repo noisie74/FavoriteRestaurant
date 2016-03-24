@@ -12,55 +12,36 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * App starts with MainActivity
+ * MainActivity has all search filters
+ * and brings user to SearchResultActivity
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-    TextView neighborhoodName;
-    TextView dollarOne;
-    TextView dollarTwo;
-    TextView dollarThree;
-    TextView dollarFour;
-    TextView price;
-    TextView rating;
-    TextView delivery;
-    TextView yes;
-    TextView no;
-    TextView filterYourSearch;
+    TextView neighborhoodName, dollarOne, dollarTwo, dollarThree, dollarFour,
+             price, rating, delivery, yes, no, filterYourSearch;
+
     RatingBar ratingBar;
-    Button clearButton;
-    Button searchButton;
-    Intent toGoToSecondActivity;
-    int dollarOneCounter;
-    int dollarTwoCounter;
-    int dollarThreeCounter;
-    int dollarFourCounter;
-    int yesCounter;
-    int noCounter;
+    Button clearButton, searchButton;
+    Intent startSearchResultsActivity;
+
+    private int dollarOneCounter, dollarTwoCounter, dollarThreeCounter,
+            dollarFourCounter, yesCounter, noCounter;
+
 
     private static final boolean PREF_KEY_COUNTER_DEFAULT = false;
-    private static String PREF_KEY_COUNTER = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        neighborhoodName = (TextView) findViewById(R.id.header);
-        dollarOne = (TextView) findViewById(R.id.dollarOne);
-        dollarTwo = (TextView) findViewById(R.id.dollarTwo);
-        dollarThree = (TextView) findViewById(R.id.dollarThree);
-        dollarFour = (TextView) findViewById(R.id.dollarFour);
-        price = (TextView) findViewById(R.id.price);
-        rating = (TextView) findViewById(R.id.rating);
-        delivery = (TextView) findViewById(R.id.delivery);
-        yes = (TextView) findViewById(R.id.yes);
-        no = (TextView) findViewById(R.id.no);
-        filterYourSearch = (TextView) findViewById(R.id.filter);
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        clearButton = (Button) findViewById(R.id.buttonClear);
-        searchButton = (Button) findViewById(R.id.button_search);
-        toGoToSecondActivity = new Intent(MainActivity.this, SecondActivity.class);
 
+        startSearchResultsActivity = new Intent(MainActivity.this, SearchResultsActivity.class);
 
+        initViews();
         clickListenersMainActivity();
         setSharedPreferences(); // Call SharedPreferences not to get duplicated data from database
 
@@ -77,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean ifNoItemsSelected() {  // Check if none of the filters(TextViews and ratingBar) are selected
 
-        if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected() && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
+        if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected()
+                && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
             Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
             return true;
         } else {
@@ -94,7 +76,12 @@ public class MainActivity extends AppCompatActivity {
         return prices;
     }
 
-    private boolean isRatingZero(boolean isTrue) {  // Check if the ratingBar has no stars
+    /**
+     * @param
+     * @return isTrue == true, if ratingBar has no rating
+     */
+
+    private boolean isRatingZero(boolean isTrue) {
         if (ratingBar.getRating() == 0) {
             return true;
         } else {
@@ -103,15 +90,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void setSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (!getSharedPreferences()) {
-            DatabaseMain.insertData(this); // Calling DatabaseMain class to  pull data from database
+            DatabaseData.insertData(this); // Calling DatabaseData class to  pull data from database
             Log.e("MainActivity", "dataInserted!");
-            editor.putBoolean(PREF_KEY_COUNTER, true);
+            editor.putBoolean(Constants.PREF_KEY_COUNTER_MAIN_ACTIVITY, true);
             editor.apply();
         }
 
@@ -119,14 +105,13 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean getSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        return sharedPreferences.getBoolean(PREF_KEY_COUNTER, PREF_KEY_COUNTER_DEFAULT);
+        return sharedPreferences.getBoolean(Constants.PREF_KEY_COUNTER_MAIN_ACTIVITY, PREF_KEY_COUNTER_DEFAULT);
     }
 
 
     /**
-     clickListeners methods for all the widgets
-     of MainActivity
-
+     * clickListeners methods for all the widgets
+     * of MainActivity
      */
 
     private void dollarTextViewsClickListeners() {
@@ -176,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void deliveryYesNoClickListeners() {
+    private void deliveryYesNoClickListeners() { // Check delivery filters
 
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,11 +209,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (ifNoItemsSelected()) return;
 
-                toGoToSecondActivity.putExtra("price", prices);
-                toGoToSecondActivity.putExtra("rating", rating);
-                toGoToSecondActivity.putExtra("delivery", delivery);
+                startSearchResultsActivity.putExtra(Constants.PRICE, prices);
+                startSearchResultsActivity.putExtra(Constants.RATING, rating);
+                startSearchResultsActivity.putExtra(Constants.DELIVERY, delivery);
 
-                startActivity(toGoToSecondActivity);
+                startActivity(startSearchResultsActivity);
 
             }
         });
@@ -257,6 +242,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Initialize Views
+     */
+    private void initViews() {
+
+        neighborhoodName = (TextView) findViewById(R.id.header);
+        dollarOne = (TextView) findViewById(R.id.dollarOne);
+        dollarTwo = (TextView) findViewById(R.id.dollarTwo);
+        dollarThree = (TextView) findViewById(R.id.dollarThree);
+        dollarFour = (TextView) findViewById(R.id.dollarFour);
+        price = (TextView) findViewById(R.id.price);
+        rating = (TextView) findViewById(R.id.rating);
+        delivery = (TextView) findViewById(R.id.delivery);
+        yes = (TextView) findViewById(R.id.yes);
+        no = (TextView) findViewById(R.id.no);
+        filterYourSearch = (TextView) findViewById(R.id.filter);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        clearButton = (Button) findViewById(R.id.buttonClear);
+        searchButton = (Button) findViewById(R.id.button_search);
     }
 
 }

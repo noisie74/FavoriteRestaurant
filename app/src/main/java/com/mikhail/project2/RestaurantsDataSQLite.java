@@ -11,7 +11,7 @@ import android.util.Log;
  * This  class creates SQLite Database
  * with it's methods
  */
-public class RestaurantsData extends SQLiteOpenHelper {
+public class RestaurantsDataSQLite extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Restaurants.db";
@@ -34,15 +34,15 @@ public class RestaurantsData extends SQLiteOpenHelper {
                     + COL_RATING + " TEXT, " + COL_DELIVERY + " TEXT, " + COL_CONTACTS + " TEXT, "
                     + COL_DESCRIPTION + " TEXT, " + COL_IMAGE + " INTEGER, " + COL_FAVORITES + " BOOLEAN )";
 
-    private static RestaurantsData instance; // singleton class of Restaurants database
+    private static RestaurantsDataSQLite instance; // singleton class of Restaurants database
 
-    private RestaurantsData(Context context) {
+    private RestaurantsDataSQLite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static RestaurantsData getInstance(Context context) {
+    public static RestaurantsDataSQLite getInstance(Context context) {
         if (instance == null) {
-            instance = new RestaurantsData(context.getApplicationContext());
+            instance = new RestaurantsDataSQLite(context.getApplicationContext());
         }
         return instance;
     }
@@ -81,14 +81,14 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
         // create a new content value to store values
         ContentValues values = new ContentValues();
-        values.put("name", name);
-        values.put("price", price);
-        values.put("rating", rating);
-        values.put("delivery", delivery);
-        values.put("contacts", contacts);
-        values.put("description", description);
-        values.put("image", image);
-        values.put("favorites", favorites);
+        values.put(COL_NAME, name);
+        values.put(COL_PRICE, price);
+        values.put(COL_RATING, rating);
+        values.put(COL_DELIVERY, delivery);
+        values.put(COL_CONTACTS, contacts);
+        values.put(COL_DESCRIPTION, description);
+        values.put(COL_IMAGE, image);
+        values.put(COL_FAVORITES, favorites);
 
         db.insert(TABLE_NAME, null, values);
         db.close();
@@ -125,7 +125,7 @@ public class RestaurantsData extends SQLiteOpenHelper {
 
     public Cursor getRestaurantsList(int prices[], float rating, String delivery) {  // in charge for returning data according set filters
 
-        Log.e("RestaurantData", " rating: " + rating + " delivery: " + delivery);
+        Log.e("RestaurantDataSQLite", " rating: " + rating + " delivery: " + delivery);
 
         SQLiteDatabase db = this.getReadableDatabase();
 

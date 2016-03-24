@@ -3,18 +3,19 @@ package com.mikhail.project2;
 import android.content.Context;
 
 /**
- * DatabaseMain class contains all
+ * DatabaseData class contains all
  * restaurants data
  */
-public class DatabaseMain {
+public class DatabaseData {
 
-    private DatabaseMain(){
+    private DatabaseData(){
 
     }
 
-    public static void insertData(Context context) {  // Insert data into the "RestaurantsData" Database
+    public static void insertData(Context context) {  // Insert data into the "RestaurantsDataSQLite" Database
 
-        RestaurantsData restaurant = RestaurantsData.getInstance(context);
+        RestaurantsDataSQLite restaurant = RestaurantsDataSQLite.getInstance(context);
+
         restaurant.insert(1, context.getString(R.string.the_lunch_box_rest), context.getString(R.string.the_lunch_box_price), context.getString(R.string.the_lunch_box_rating), context.getString(R.string.the_lunch_box_delivery), context.getString(R.string.the_lunch_box_contacts), context.getString(R.string.the_lunch_box_description), R.drawable.lunchbox, false);
         restaurant.insert(2, context.getString(R.string.bacheesos_rest), context.getString(R.string.bacheesos_price), context.getString(R.string.bacheesos_rating), context.getString(R.string.bacheesos_delivery), context.getString(R.string.bacheesos_contacts), context.getString(R.string.bacheesos_description), R.drawable.bacheesos, false);
         restaurant.insert(3, context.getString(R.string.flora_rest), context.getString(R.string.flora_price), context.getString(R.string.flora_rating), context.getString(R.string.flora_delivery), context.getString(R.string.flora_contacts), context.getString(R.string.flora_description), R.drawable.flora, false);

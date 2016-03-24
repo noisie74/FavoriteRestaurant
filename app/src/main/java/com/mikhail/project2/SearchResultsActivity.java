@@ -18,11 +18,17 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SecondActivity extends AppCompatActivity {
+/**
+ SearchResultsActivity shows search results
+ for restaurants according to filters selected
+ in the MainActivity
+ */
+
+public class SearchResultsActivity extends AppCompatActivity {
 
     TextView restaurantsCountHeader;
     ListView restaurantsList;
-    Intent secondActivityIntent;
+    Intent searchResultsActivityIntent;
     Cursor cursor;
     CursorAdapter simpleCursorAdapter;
     MenuItem star;
@@ -35,7 +41,7 @@ public class SecondActivity extends AppCompatActivity {
         restaurantsCountHeader = (TextView) findViewById(R.id.restaurants_count);
         restaurantsList = (ListView) findViewById(R.id.restaurantsList);
 
-        secondActivityIntent = getIntent();
+        searchResultsActivityIntent = getIntent();
 
         onNewIntent(getIntent());
         insertReceivedSearchResultsToTheListView();
@@ -63,13 +69,13 @@ public class SecondActivity extends AppCompatActivity {
                  gets data from Favorites Column in the database and sends it to FavoriteActivity
                  */
 
-                Cursor cursorFavorites = RestaurantsData.getInstance(SecondActivity.this).getRestaurantIfInFavorites();
+                Cursor cursorFavorites = RestaurantsDataSQLite.getInstance(SearchResultsActivity.this).getRestaurantIfInFavorites();
 
-                int restaurantID = cursorFavorites.getColumnIndex(RestaurantsData.COL_FAVORITES);
+                int restaurantID = cursorFavorites.getColumnIndex(RestaurantsDataSQLite.COL_FAVORITES);
 
-                Intent intent = new Intent(SecondActivity.this, FavoriteListActivity.class);
+                Intent intent = new Intent(SearchResultsActivity.this, FavoriteListActivity.class);
 
-                intent.putExtra("data", restaurantID);
+                intent.putExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, restaurantID);
                 startActivity(intent);
 
                 return true;
@@ -87,13 +93,13 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {  // Getting search Intent from Search Manager
-        Log.d("secondActivity", "clicked");
+        Log.d("SearchResultsActivity", "clicked");
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 
             String query = intent.getStringExtra(SearchManager.QUERY);
 
-            cursor = RestaurantsData.getInstance(SecondActivity.this).getSearchResults(query);
+            cursor = RestaurantsDataSQLite.getInstance(SearchResultsActivity.this).getSearchResults(query);
 
             simpleCursorAdapter.swapCursor(cursor);
             simpleCursorAdapter.notifyDataSetChanged();
@@ -103,22 +109,22 @@ public class SecondActivity extends AppCompatActivity {
 
     private void insertReceivedSearchResultsToTheListView() {  // get search results from MainActivity, create CursorAdapter and insert data into ListView
 
-        int prices[] = getIntent().getIntArrayExtra("price");
-        float ratingSelection = getIntent().getFloatExtra("rating", 0.0f);
-        String deliverySelection = getIntent().getStringExtra("delivery");
+        int prices[] = getIntent().getIntArrayExtra(Constants.PRICE);
+        float ratingSelection = getIntent().getFloatExtra(Constants.RATING, 0.0f);
+        String deliverySelection = getIntent().getStringExtra(Constants.DELIVERY);
 
-        RestaurantsData dbSetup =  RestaurantsData.getInstance(SecondActivity.this);
+        RestaurantsDataSQLite dbSetup =  RestaurantsDataSQLite.getInstance(SearchResultsActivity.this);
         dbSetup.getReadableDatabase();
 
-        cursor = RestaurantsData.getInstance(SecondActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
+        cursor = RestaurantsDataSQLite.getInstance(SearchResultsActivity.this).getRestaurantsList(prices, ratingSelection, deliverySelection);
 
         /**
          Create simpleCursorAdapter and set it to ListView
          */
 
-        final String[] columns = new String[]{RestaurantsData.COL_NAME};
+        final String[] columns = new String[]{RestaurantsDataSQLite.COL_NAME};
         int[] viewNames = new int[]{R.id.text};
-        simpleCursorAdapter = new SimpleCursorAdapter(SecondActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
+        simpleCursorAdapter = new SimpleCursorAdapter(SearchResultsActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
 
         restaurantsList.setAdapter(simpleCursorAdapter);
 
@@ -131,20 +137,20 @@ public class SecondActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 /**
-                 get data from database by ID and send it to ThirdActivity
+                 get data from database by ID and send it to DetailActivity
                  */
 
                 cursor.moveToPosition(position);
-                int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
+                int getDataFromCursor = cursor.getColumnIndex(RestaurantsDataSQLite.COL_ID);
 
                 String restaurantIDString = cursor.getString(getDataFromCursor);
                 int restaurantID = (Integer.valueOf(restaurantIDString));
 
-                Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+                Intent intent = new Intent(SearchResultsActivity.this, DetailActivity.class);
 
-                intent.putExtra("data", restaurantID);
+                intent.putExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, restaurantID);
                 startActivity(intent);
-                Log.d("restaurantIDString", "secondActivityIntent");
+                Log.d("restaurantIDString", "searchResultsActivityIntent");
             }
         });
     }

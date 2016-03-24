@@ -10,15 +10,20 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+/**
+ FavoriteListActivity shows the list of restaurants
+ which are in "Favorites"
+ */
+
 public class FavoriteListActivity extends AppCompatActivity {
 
 
     TextView textView;
     ListView listView;
-    Intent fourthActivityIntent;
+    Intent fromDetailActivityIntent;
     int restaurantID;
     final static int DEFAULT_VALUE = -1;
-    RestaurantsData helper;
+    RestaurantsDataSQLite helper;
     SimpleCursorAdapter cursorAdapter;
     Cursor cursor;
 
@@ -30,10 +35,10 @@ public class FavoriteListActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.restaurants_favorite);
         listView = (ListView) findViewById(R.id.restaurantsList);
 
-        fourthActivityIntent = getIntent();
-        restaurantID = fourthActivityIntent.getIntExtra("data", DEFAULT_VALUE);
+        fromDetailActivityIntent = getIntent();
+        restaurantID = fromDetailActivityIntent.getIntExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, DEFAULT_VALUE);
 
-        helper = RestaurantsData.getInstance(FavoriteListActivity.this);
+        helper = RestaurantsDataSQLite.getInstance(FavoriteListActivity.this);
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // set items in the list clickable
@@ -42,17 +47,17 @@ public class FavoriteListActivity extends AppCompatActivity {
 
                 /**
                  get data from database using primary key - ID
-                 and send it to ThirdActivity
+                 and send it to DetailActivity
                  */
 
                 cursor.moveToPosition(position);
-                int getDataFromCursor = cursor.getColumnIndex(RestaurantsData.COL_ID);
+                int getDataFromCursor = cursor.getColumnIndex(RestaurantsDataSQLite.COL_ID);
                 String restaurantIDString = cursor.getString(getDataFromCursor);
                 int restaurantID = (Integer.valueOf(restaurantIDString));
 
-                Intent intent = new Intent(FavoriteListActivity.this, ThirdActivity.class);
+                Intent intent = new Intent(FavoriteListActivity.this, DetailActivity.class);
 
-                intent.putExtra("data", restaurantID);
+                intent.putExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, restaurantID);
                 startActivity(intent);
 
             }
@@ -65,15 +70,13 @@ public class FavoriteListActivity extends AppCompatActivity {
         super.onResume();
 
         if (restaurantID != DEFAULT_VALUE) {
-
             cursor = helper.getRestaurantIfInFavorites();
-
             cursor.moveToFirst();
 
             /**
              create simpleCursorAdapter and set it to ListView
              */
-            final String[] columns = new String[]{RestaurantsData.COL_NAME};
+            final String[] columns = new String[]{RestaurantsDataSQLite.COL_NAME};
             int[] viewNames = new int[]{R.id.text};
             cursorAdapter = new SimpleCursorAdapter(FavoriteListActivity.this, R.layout.custom, cursor, columns, viewNames, 0);
 

@@ -4,29 +4,30 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class ThirdActivity extends AppCompatActivity {
+/**
+ DetailActivity shows restaurant details
+ for the restaurant selected in
+ the SearchResultsActivity
+ */
 
-    Intent fromSecondActivity;
-    TextView restaurantName;
-    TextView restaurantDescription;
-    TextView restaurantContacts;
-    TextView price;
-    TextView rating;
-    TextView delivery;
+public class DetailActivity extends AppCompatActivity {
+
+
+    TextView restaurantName, restaurantDescription, restaurantContacts,
+             price, rating, delivery;
     ImageView restaurantImage;
     Button addToFavorites;
-    RestaurantsData helper;
-    int restaurantID;
-    int favorites;
-    int indexPrice;
-    String priceOfRestaurant;
-    String dollarSymbols;
+    Intent fromSearchResultsActivityIntent;
+    RestaurantsDataSQLite helper;
+    public int restaurantID, favorites, indexPrice;
+    public String priceOfRestaurant, dollarSymbols;
+
     private static final int DEFAULT_RESTAURANT_ID = -1;
 
     @Override
@@ -34,23 +35,17 @@ public class ThirdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
 
-        restaurantName = (TextView) findViewById(R.id.restaurant_header);
-        restaurantDescription = (TextView) findViewById(R.id.restaurant_description);
-        restaurantContacts = (TextView) findViewById(R.id.restaurant_contacts);
-        price = (TextView) findViewById(R.id.price);
-        rating = (TextView) findViewById(R.id.rating);
-        delivery = (TextView) findViewById(R.id.delivery);
-        restaurantImage = (ImageView) findViewById(R.id.restaurant_image);
-        addToFavorites = (Button) findViewById(R.id.add_to_favorites);
+        initViews();
 
-        helper = RestaurantsData.getInstance(ThirdActivity.this);
+        helper = RestaurantsDataSQLite.getInstance(DetailActivity.this);
 
         addToFavoritesClickListener();
 
-        fromSecondActivity = getIntent();
-        restaurantID = fromSecondActivity.getIntExtra("data", DEFAULT_RESTAURANT_ID);
+        fromSearchResultsActivityIntent = getIntent();
+        restaurantID = fromSearchResultsActivityIntent.getIntExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, DEFAULT_RESTAURANT_ID);
+        Log.d("DetailActivity", "fromSearchResultsActivityIntent");
 
-        getDataFromSecondActivityAndInsertItToView();
+        getDataFromSearchResultsActivityAndInsertItToView();
 
     }
 
@@ -106,24 +101,24 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     /**
-     this method gets data from SecondActivity
+     this method gets data from SearchResultsActivity
      and inserts it to View widgets
      */
 
-    private void getDataFromSecondActivityAndInsertItToView() {
+    private void getDataFromSearchResultsActivityAndInsertItToView() {
 
         if (restaurantID != DEFAULT_RESTAURANT_ID) {
 
             Cursor cursor = helper.getRestaurantByID(restaurantID);
             cursor.moveToFirst();
 
-            int index = cursor.getColumnIndex(RestaurantsData.COL_NAME);
-            int indexDescription = cursor.getColumnIndex(RestaurantsData.COL_DESCRIPTION);
-            int indexContacts = cursor.getColumnIndex(RestaurantsData.COL_CONTACTS);
-            int indexFavorites = cursor.getColumnIndex(RestaurantsData.COL_FAVORITES);
-            int indexRating = cursor.getColumnIndex(RestaurantsData.COL_RATING);
-            int indexDelivery = cursor.getColumnIndex(RestaurantsData.COL_DELIVERY);
-            int indexImage = cursor.getInt(cursor.getColumnIndex(RestaurantsData.COL_IMAGE));
+            int index = cursor.getColumnIndex(RestaurantsDataSQLite.COL_NAME);
+            int indexDescription = cursor.getColumnIndex(RestaurantsDataSQLite.COL_DESCRIPTION);
+            int indexContacts = cursor.getColumnIndex(RestaurantsDataSQLite.COL_CONTACTS);
+            int indexFavorites = cursor.getColumnIndex(RestaurantsDataSQLite.COL_FAVORITES);
+            int indexRating = cursor.getColumnIndex(RestaurantsDataSQLite.COL_RATING);
+            int indexDelivery = cursor.getColumnIndex(RestaurantsDataSQLite.COL_DELIVERY);
+            int indexImage = cursor.getInt(cursor.getColumnIndex(RestaurantsDataSQLite.COL_IMAGE));
 
             String nameOfRestaurant = cursor.getString(index);
             String description = cursor.getString(indexDescription);
@@ -135,7 +130,7 @@ public class ThirdActivity extends AppCompatActivity {
             String ratingStars = "Rating: ";
             String deliveryText = "Delivery: ";
 
-            indexPrice = cursor.getColumnIndex(RestaurantsData.COL_PRICE);
+            indexPrice = cursor.getColumnIndex(RestaurantsDataSQLite.COL_PRICE);
             priceOfRestaurant = cursor.getString(indexPrice);
             favorites = cursor.getInt(indexFavorites);
 
@@ -150,6 +145,21 @@ public class ThirdActivity extends AppCompatActivity {
             delivery.setText(deliveryText.concat(deliveryOfRestaurant));
         }
 
+    }
+
+    /**
+     * initialize Views
+     */
+    private void initViews(){
+
+        restaurantName = (TextView) findViewById(R.id.restaurant_header);
+        restaurantDescription = (TextView) findViewById(R.id.restaurant_description);
+        restaurantContacts = (TextView) findViewById(R.id.restaurant_contacts);
+        price = (TextView) findViewById(R.id.price);
+        rating = (TextView) findViewById(R.id.rating);
+        delivery = (TextView) findViewById(R.id.delivery);
+        restaurantImage = (ImageView) findViewById(R.id.restaurant_image);
+        addToFavorites = (Button) findViewById(R.id.add_to_favorites);
     }
 
 }
