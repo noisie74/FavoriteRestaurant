@@ -116,5 +116,6 @@
     <string name="space_burger_delivery">NO</string>
     <string name="space_burger_contacts">2150 Telegraph Ave, Oakland, CA 94612</string>
     <string name="space_burger_description">Burgers</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

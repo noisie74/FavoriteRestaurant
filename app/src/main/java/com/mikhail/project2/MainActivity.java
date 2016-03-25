@@ -1,11 +1,18 @@
 package com.mikhail.project2;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -21,11 +28,12 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     TextView neighborhoodName, dollarOne, dollarTwo, dollarThree, dollarFour,
-             price, rating, delivery, yes, no, filterYourSearch;
+            price, rating, delivery, yes, no, filterYourSearch;
 
     RatingBar ratingBar;
     Button clearButton, searchButton;
     Intent startSearchResultsActivity;
+    MenuItem map;
 
     private int dollarOneCounter, dollarTwoCounter, dollarThreeCounter,
             dollarFourCounter, yesCounter, noCounter;
@@ -262,6 +270,44 @@ public class MainActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         clearButton = (Button) findViewById(R.id.buttonClear);
         searchButton = (Button) findViewById(R.id.button_search);
+    }
+
+    /**
+     * Create maps icon at the toolbar
+     */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {  // Create toolbar with search and favorites widgets
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main2, menu);
+
+        map = menu.findItem(R.id.google_maps); // Create button that allows user see restaurants in favorites
+
+        map.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                /**
+                 gets data from Favorites Column in the database and sends it to Maps_Activity
+                 */
+
+                Cursor cursorFavorites = RestaurantsDataSQLite.getInstance(MainActivity.this).getRestaurantIfInFavorites();
+
+                int restaurantID = cursorFavorites.getColumnIndex(RestaurantsDataSQLite.COL_FAVORITES);
+
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+
+                intent.putExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, restaurantID);
+                startActivity(intent);
+
+                return true;
+            }
+
+        });
+
+        return true;
+
     }
 
 }
