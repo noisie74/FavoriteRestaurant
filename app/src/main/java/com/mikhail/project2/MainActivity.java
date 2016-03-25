@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean ifNoItemsSelected() {  // Check if none of the filters(TextViews and ratingBar) are selected
 
         if (!dollarOne.isSelected() && !dollarTwo.isSelected() && !dollarThree.isSelected()
-                && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero(true)) {
+                && !dollarFour.isSelected() && !yes.isSelected() && !no.isSelected() && isRatingZero()) {
             Toast.makeText(MainActivity.this, "Please specify your search!", Toast.LENGTH_SHORT).show();
             return true;
         } else {
@@ -77,11 +77,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * @param
-     * @return isTrue == true, if ratingBar has no rating
+     * @return true, if ratingBar has no rating
      */
 
-    private boolean isRatingZero(boolean isTrue) {
+    private boolean isRatingZero() {
         if (ratingBar.getRating() == 0) {
             return true;
         } else {
