@@ -4,7 +4,7 @@ import android.content.Context;
 
 /**
  * DatabaseData class contains all
- * restaurants data
+ * restaurantsItems data
  */
 public class DatabaseData {
 

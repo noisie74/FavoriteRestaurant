@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 /**
  SearchResultsActivity shows search results
- for restaurants according to filters selected
+ for restaurantsItems according to filters selected
  in the MainActivity
  */
 
@@ -59,7 +59,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        star = menu.findItem(R.id.favorites); // Create button that allows user see restaurants in favorites
+        star = menu.findItem(R.id.favorites); // Create button that allows user see restaurantsItems in favorites
 
         star.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

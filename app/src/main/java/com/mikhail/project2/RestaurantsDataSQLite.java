@@ -15,7 +15,7 @@ public class RestaurantsDataSQLite extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Restaurants.db";
-    public static final String TABLE_NAME = "restaurants";
+    public static final String TABLE_NAME = "restaurantsItems";
     public static final String COL_ID = "_id";
     public static final String COL_NAME = "name";
     public static final String COL_PRICE = "price";
@@ -120,7 +120,7 @@ public class RestaurantsDataSQLite extends SQLiteOpenHelper {
         String[] selectionArgs = new String[]{String.valueOf(id)};
 
         // Delete everything that satisfies the selection
-        db.delete("restaurants", selection, selectionArgs);
+        db.delete("restaurantsItems", selection, selectionArgs);
     }
 
     public Cursor getRestaurantsList(int prices[], float rating, String delivery) {  // in charge for returning data according set filters
@@ -167,7 +167,7 @@ public class RestaurantsDataSQLite extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getRestaurantByID(int id) { // returns restaurants by Primary Key - ID
+    public Cursor getRestaurantByID(int id) { // returns restaurantsItems by Primary Key - ID
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, TABLE_COLUMNS,
@@ -199,7 +199,7 @@ public class RestaurantsDataSQLite extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getRestaurantIfInFavorites() { // returns the column of restaurants that are in Favorites
+    public Cursor getRestaurantIfInFavorites() { // returns the column of restaurantsItems that are in Favorites
         SQLiteDatabase db = this.getReadableDatabase();
 
 

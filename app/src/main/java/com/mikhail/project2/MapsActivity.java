@@ -44,5 +44,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng oakland = new LatLng(37.804364, -122.271114);
         mMap.addMarker(new MarkerOptions().position(oakland).title("Marker in Oakland"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oakland, zoomLevel));
+//        releaseInstance();
     }
 }

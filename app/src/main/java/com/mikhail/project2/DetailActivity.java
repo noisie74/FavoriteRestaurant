@@ -63,7 +63,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    private void updateFavoriteDataBase() { // adds or removes restaurants from Favorite Column in database
+    private void updateFavoriteDataBase() { // adds or removes restaurantsItems from Favorite Column in database
 
         if (favorites == 0) {
             helper.updateFavorites(restaurantID, false);

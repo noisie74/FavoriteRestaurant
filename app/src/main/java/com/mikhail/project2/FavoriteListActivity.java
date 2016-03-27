@@ -11,7 +11,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
- FavoriteListActivity shows the list of restaurants
+ FavoriteListActivity shows the list of restaurantsItems
  which are in "Favorites"
  */
 

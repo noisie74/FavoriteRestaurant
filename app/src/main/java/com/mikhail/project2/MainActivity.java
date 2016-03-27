@@ -1,14 +1,11 @@
 package com.mikhail.project2;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +15,8 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * App starts with MainActivity
@@ -102,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (!getSharedPreferences()) {
-            DatabaseData.insertData(this); // Calling DatabaseData class to  pull data from database
+             populateDatabase();
+//            DatabaseData.insertData(this); // Calling DatabaseData class to  pull data from database
             Log.e("MainActivity", "dataInserted!");
             editor.putBoolean(Constants.PREF_KEY_COUNTER_MAIN_ACTIVITY, true);
             editor.apply();
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main2, menu);
 
-        map = menu.findItem(R.id.google_maps); // Create button that allows user see restaurants in favorites
+        map = menu.findItem(R.id.google_maps); // Create button that allows user see restaurantsItems in favorites
 
         map.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -308,6 +308,26 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
 
+    }
+
+    /**
+     this method populates data from database
+     */
+
+    private void populateDatabase() {
+        ArrayList<Restaurants> restaurantsItems = PopulateRestaurants.getRestaurants(this);
+        for (Restaurants restaurants : restaurantsItems) {
+            RestaurantsDataSQLite.getInstance(this).insert(
+                    restaurants.getId(),
+                    restaurants.getName(),
+                    restaurants.getPrice(),
+                    restaurants.getRating(),
+                    restaurants.getDelivery(),
+                    restaurants.getContacts(),
+                    restaurants.getDescription(),
+                    restaurants.getImageResourceId(),
+                    restaurants.isFavorite());
+        }
     }
 
 }
