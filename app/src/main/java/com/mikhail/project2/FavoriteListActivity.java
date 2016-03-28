@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,8 +33,11 @@ public class FavoriteListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_favorites);
 
-        textView = (TextView) findViewById(R.id.restaurants_favorite);
+        textView = (TextView) findViewById(R.id.text);
         listView = (ListView) findViewById(R.id.restaurantsList);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         fromDetailActivityIntent = getIntent();
         restaurantID = fromDetailActivityIntent.getIntExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, DEFAULT_VALUE);
