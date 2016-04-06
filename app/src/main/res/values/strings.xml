@@ -11,7 +11,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="search_hint">Search by restaurant name</string>
+    <string name="search_hint">Enter restaurant name</string>
     <string name="inFavorites"> In Favorites</string>
     <string name="addToFavorites"> Add to Favorites</string>
     <string name="saved_restaurants">Your saved restaurants:</string>

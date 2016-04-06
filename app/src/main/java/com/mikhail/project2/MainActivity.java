@@ -3,14 +3,17 @@ package com.mikhail.project2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -45,11 +48,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        DataBaseAsync dataBaseAsync = new DataBaseAsync();
+//        dataBaseAsync.execute();
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Find Your Favorite Restaurant");
+
 
         startSearchResultsActivity = new Intent(MainActivity.this, SearchResultsActivity.class);
 
         initViews();
         clickListenersMainActivity();
+
+
         setSharedPreferences(); // Call SharedPreferences not to get duplicated data from database
 
     }
@@ -101,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (!getSharedPreferences()) {
-             populateDatabase();
+//             populateDatabase();
+
+            DataBaseAsync dataBaseAsync = new DataBaseAsync();
+            dataBaseAsync.execute();
+
 //            DatabaseData.insertData(this); // Calling DatabaseData class to  pull data from database
             Log.e("MainActivity", "dataInserted!");
             editor.putBoolean(Constants.PREF_KEY_COUNTER_MAIN_ACTIVITY, true);
@@ -282,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main2, menu);
 
-        map = menu.findItem(R.id.google_maps); // Create button that allows user see restaurantsItems in favorites
+        map = menu.findItem(R.id.google_maps); // Create button that allows user see location of the neighborhood
 
         map.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -311,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     this method populates data from database
+     * this method populates data from database
      */
 
     private void populateDatabase() {
@@ -330,4 +347,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public class DataBaseAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            populateDatabase();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+
+
 }
+
+
