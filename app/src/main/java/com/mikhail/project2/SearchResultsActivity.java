@@ -39,11 +39,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        restaurantsCountHeader = (TextView) findViewById(R.id.restaurants_count);
+//        restaurantsCountHeader = (TextView) findViewById(R.id.restaurants_count);
         restaurantsList = (ListView) findViewById(R.id.restaurantsList);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Restaurants Found ");
+
 
         searchResultsActivityIntent = getIntent();
 

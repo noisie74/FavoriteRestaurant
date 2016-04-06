@@ -11,9 +11,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+
 /**
- FavoriteListActivity shows the list of restaurantsItems
- which are in "Favorites"
+ * FavoriteListActivity shows the list of restaurantsItems
+ * which are in "Favorites"
  */
 
 public class FavoriteListActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class FavoriteListActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         fromDetailActivityIntent = getIntent();
         restaurantID = fromDetailActivityIntent.getIntExtra(Constants.PREF_KEY_COUNTER_SEARCH_RESULTS_ACTIVITY, DEFAULT_VALUE);
